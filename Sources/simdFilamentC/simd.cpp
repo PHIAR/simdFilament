@@ -1,5 +1,5 @@
-#include "simd_types.h"
-#include "simd_vector_constructors.h"
+#include "simd/types.h"
+#include "simd/vector_constructors.h"
 
 #include <math/vec2.h>
 #include <math/vec3.h>

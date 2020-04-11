@@ -1,0 +1,4 @@
+module simdFilamentC {
+    umbrella header "simd/simd.h"
+    export *
+}

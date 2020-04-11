@@ -1,6 +1,6 @@
 #pragma once
 
-#include "simd_types.h"
+#include "simd/types.h"
 
 #ifdef __cplusplus
 extern "C"
