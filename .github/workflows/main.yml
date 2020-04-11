@@ -1,0 +1,29 @@
+name: CI
+
+on:
+- push
+- pull_request
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: sudo apt-get --no-install-recommends install clang libicu-dev software-properties-common subversion
+
+    - name: Download Filament math utilities
+      run: svn checkout https://github.com/google/filament/trunk/libs/math/include filament-math
+
+    - name: Install swift
+      run: curl https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz | sudo tar xz --strip-components 2 -C/usr/local/
+      
+    - name: Build
+      run: swift build -Xcc -Ifilament-math
+
+    - name: Test
+      run: swift test -Xcc -Ifilament-math
