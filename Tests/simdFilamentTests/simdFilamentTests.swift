@@ -1,8 +1,8 @@
 import simdFilament
 import XCTest
 
-public class simdFilamentTests: XCTestCase {
-    public static var allTests = [
+internal class simdFilamentTests: XCTestCase {
+    internal static var allTests = [
         ("testConstruct2", testConstruct2),
         ("testConstruct3", testConstruct3),
         ("testConstruct4", testConstruct4),
@@ -13,7 +13,7 @@ public class simdFilamentTests: XCTestCase {
 
     private static let accuracy = Float(1e-3)
 
-    public func testConstruct2() {
+    internal func testConstruct2() {
         let values: [Float] = [1.0, 2.0]
         let vec1 = simd_make_float2(values)
         let vec2 = simd_float2(values)
@@ -23,7 +23,7 @@ public class simdFilamentTests: XCTestCase {
         XCTAssertEqual(vec1, vec3)
     }
 
-    public func testConstruct3() {
+    internal func testConstruct3() {
         let values: [Float] = [1.0, 2.0, 3.0]
         let vec1 = simd_make_float3(values)
         let vec2 = simd_float3(values)
@@ -37,7 +37,7 @@ public class simdFilamentTests: XCTestCase {
         XCTAssertEqual(vec1, vec5)
     }
 
-    public func testConstruct4() {
+    internal func testConstruct4() {
         let values: [Float] = [1.0, 2.0, 3.0, 4.0]
         let vec1 = simd_make_float4(values)
         let vec2 = simd_float4(values)
@@ -51,7 +51,7 @@ public class simdFilamentTests: XCTestCase {
         XCTAssertEqual(vec1, vec5)
     }
 
-    public func testConstruct4x4() {
+    internal func testConstruct4x4() {
         let column = simd_float4(1.0, 1.0, 1.0, 1.0)
         let a = simd_float4x4(column, 2.0 * column, 3.0 * column, 4.0 * column)
 
@@ -61,7 +61,7 @@ public class simdFilamentTests: XCTestCase {
         }
     }
 
-    public func testDot() {
+    internal func testDot() {
         let a = simd_float2(1.0, 2.0)
         let b = simd_float2(2.0, 3.0)
 
@@ -72,7 +72,7 @@ public class simdFilamentTests: XCTestCase {
                        accuracy: simdFilamentTests.accuracy)
     }
 
-    public func testCross() {
+    internal func testCross() {
         let a = simd_float3(1.0, 2.0, 3.0)
         let b = simd_float3(4.0, 5.0, 6.0)
 
