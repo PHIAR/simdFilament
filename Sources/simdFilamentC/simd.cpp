@@ -6,38 +6,6 @@
 
 using namespace filament::math;
 
-#pragma mark Absolute Value
-
-extern "C"
-{
-    simd_float2
-    simd_abs2(simd_float2 v)
-    {
-        auto const &_v = *reinterpret_cast<float2 const *>(&v);
-        auto const &_abs = abs(_v);
-
-        return reinterpret_cast<simd_float2 const &>(_abs);
-    }
-
-    simd_float3
-    simd_abs3(simd_float3 v)
-    {
-        auto const &_v = *reinterpret_cast<float3 const *>(&v);
-        auto const &_abs = abs(_v);
-
-        return reinterpret_cast<simd_float3 const &>(_abs);
-    }
-
-    simd_float4
-    simd_abs4(simd_float4 v)
-    {
-        auto const &_v = *reinterpret_cast<float4 const *>(&v);
-        auto const &_abs = abs(_v);
-
-        return reinterpret_cast<simd_float4 const &>(_abs);
-    }
-}
-
 #pragma mark Dot Product
 
 extern "C"
