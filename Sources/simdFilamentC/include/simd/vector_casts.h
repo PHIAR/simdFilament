@@ -8,16 +8,20 @@
         return __builtin_convertvector(v, simd_ ## to_base_type ## dimensions); \
     }
 
-#define DEFINE_VECTOR_CASTS(from_base_type, to_base_type) \
+#define DEFINE_CASTS_ALL_DIMENSIONS(from_base_type, to_base_type) \
     DEFINE_CAST(from_base_type, to_base_type, 2) \
     DEFINE_CAST(from_base_type, to_base_type, 3) \
     DEFINE_CAST(from_base_type, to_base_type, 4)
 
-#define DEFINE_CASTS_TO(type) \
-    DEFINE_VECTOR_CASTS(float, type) \
-    DEFINE_VECTOR_CASTS(double, type) \
-    DEFINE_VECTOR_CASTS(int, type)
+#define DEFINE_CASTS_ALL_TO(type) \
+    DEFINE_CASTS_ALL_DIMENSIONS(float, type) \
+    DEFINE_CASTS_ALL_DIMENSIONS(double, type) \
+    DEFINE_CASTS_ALL_DIMENSIONS(int, type)
 
-DEFINE_CASTS_TO(float)
-DEFINE_CASTS_TO(double)
-DEFINE_CASTS_TO(int)
+DEFINE_CASTS_ALL_TO(float)
+DEFINE_CASTS_ALL_TO(double)
+DEFINE_CASTS_ALL_TO(int)
+
+#undef DEFINE_CAST
+#undef DEFINE_CASTS_ALL_DIMENSIONS
+#undef DEFINE_CASTS_ALL_TO
