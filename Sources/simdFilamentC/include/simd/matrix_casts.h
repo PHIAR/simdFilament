@@ -44,11 +44,21 @@
     DEFINE_CASTS_ALL_DIMENSIONS(uint, type) \
     DEFINE_CASTS_ALL_DIMENSIONS(ushort, type)
 
-DEFINE_CASTS_ALL_TO(float)
-DEFINE_CASTS_ALL_TO(double)
-DEFINE_CASTS_ALL_TO(int)
-DEFINE_CASTS_ALL_TO(uint)
-DEFINE_CASTS_ALL_TO(ushort)
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+    DEFINE_CASTS_ALL_TO(float)
+    DEFINE_CASTS_ALL_TO(double)
+    DEFINE_CASTS_ALL_TO(int)
+    DEFINE_CASTS_ALL_TO(uint)
+    DEFINE_CASTS_ALL_TO(ushort)
+
+#ifdef __cplusplus
+}
+#endif
 
 #undef DEFINE_CAST
 #undef DEFINE_CAST_WITH_DIMENSIONS
