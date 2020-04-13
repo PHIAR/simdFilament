@@ -90,4 +90,15 @@ internal class simdFilamentTests: XCTestCase {
 
         XCTAssertEqual(cross, expected)
     }
+
+    internal func testDistance() {
+        let a = simd_float3(1.0, 2.0, 3.0)
+        let b = simd_float3(2.0, 1.0, 3.0)
+        let distance = simd_distance(a, b)
+        let expected = Float(sqrt(2.0))
+
+        XCTAssertEqual(distance,
+                       expected,
+                       accuracy: simdFilamentTests.accuracy)
+    }
 }
