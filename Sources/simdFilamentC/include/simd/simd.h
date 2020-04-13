@@ -5,4 +5,5 @@
 #include "simd/vector_geometry.h"
 #include "simd/vector_math.h"
 
+#include "simd/matrix_casts.h"
 #include "simd/matrix_constructors.h"
