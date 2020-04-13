@@ -60,3 +60,21 @@ typedef struct { simd_int3 columns[4]; } simd_int4x3;
 typedef struct { simd_int4 columns[2]; } simd_int2x4;
 typedef struct { simd_int4 columns[3]; } simd_int3x4;
 typedef struct { simd_int4 columns[4]; } simd_int4x4;
+
+#pragma mark Unsigned Int
+
+typedef __attribute__((ext_vector_type(2))) unsigned int simd_uint2;
+typedef __attribute__((ext_vector_type(3))) unsigned int simd_uint3;
+typedef __attribute__((ext_vector_type(4))) unsigned int simd_uint4;
+
+typedef struct { simd_uint2 columns[2]; } simd_uint2x2;
+typedef struct { simd_uint2 columns[3]; } simd_uint3x2;
+typedef struct { simd_uint2 columns[4]; } simd_uint4x2;
+
+typedef struct { simd_uint3 columns[2]; } simd_uint2x3;
+typedef struct { simd_uint3 columns[3]; } simd_uint3x3;
+typedef struct { simd_uint3 columns[4]; } simd_uint4x3;
+
+typedef struct { simd_uint4 columns[2]; } simd_uint2x4;
+typedef struct { simd_uint4 columns[3]; } simd_uint3x4;
+typedef struct { simd_uint4 columns[4]; } simd_uint4x4;

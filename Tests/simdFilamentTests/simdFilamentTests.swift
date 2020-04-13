@@ -73,6 +73,8 @@ internal class simdFilamentTests: XCTestCase {
                                    simd_int3(4, 5, 6))
 
         XCTAssertEqual(matInt, expected)
+        XCTAssertEqual(simd_uint2x3(matFloat),
+                       simd_uint2x3(matInt))
     }
 
     internal func testAbs() {
