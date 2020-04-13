@@ -78,3 +78,21 @@ typedef struct { simd_uint3 columns[4]; } simd_uint4x3;
 typedef struct { simd_uint4 columns[2]; } simd_uint2x4;
 typedef struct { simd_uint4 columns[3]; } simd_uint3x4;
 typedef struct { simd_uint4 columns[4]; } simd_uint4x4;
+
+#pragma mark Unsigned Short
+
+typedef __attribute__((ext_vector_type(2))) unsigned short simd_ushort2;
+typedef __attribute__((ext_vector_type(3))) unsigned short simd_ushort3;
+typedef __attribute__((ext_vector_type(4))) unsigned short simd_ushort4;
+
+typedef struct { simd_ushort2 columns[2]; } simd_ushort2x2;
+typedef struct { simd_ushort2 columns[3]; } simd_ushort3x2;
+typedef struct { simd_ushort2 columns[4]; } simd_ushort4x2;
+
+typedef struct { simd_ushort3 columns[2]; } simd_ushort2x3;
+typedef struct { simd_ushort3 columns[3]; } simd_ushort3x3;
+typedef struct { simd_ushort3 columns[4]; } simd_ushort4x3;
+
+typedef struct { simd_ushort4 columns[2]; } simd_ushort2x4;
+typedef struct { simd_ushort4 columns[3]; } simd_ushort3x4;
+typedef struct { simd_ushort4 columns[4]; } simd_ushort4x4;
