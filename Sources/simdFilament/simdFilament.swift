@@ -1,106 +1,479 @@
 @_exported import simdFilamentC
 
-private func get <T> (index: Int,
-                      in tuple: (T, T)) -> T {
-    switch index {
-    case 0:
-        return tuple.0
-    case 1:
-        return tuple.1
-    default:
-        preconditionFailure("Out of bounds index: \(index)")
+public protocol SIMDMatrix {
+    associatedtype Column
+    static var columnCount: Int { get }
+
+    subscript(index: Int) -> Column { get set }
+}
+
+public extension SIMDMatrix where Column: SIMD {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        for i in 0..<self.columnCount {
+            guard lhs[i] == rhs[i] else {
+                return false
+            }
+        }
+
+        return true
     }
 }
 
-private func get <T> (index: Int,
-                      in tuple: (T, T, T)) -> T {
-    switch index {
-    case 0:
-        return tuple.0
-    case 1:
-        return tuple.1
-    case 2:
-        return tuple.2
-    default:
-        preconditionFailure("Out of bounds index: \(index)")
+extension simd_float2x2: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_float2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-private func get <T> (index: Int,
-                      in tuple: (T, T, T, T)) -> T {
-    switch index {
-    case 0:
-        return tuple.0
-    case 1:
-        return tuple.1
-    case 2:
-        return tuple.2
-    case 3:
-        return tuple.3
-    default:
-        preconditionFailure("Out of bounds index: \(index)")
+extension simd_float3x2: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_float2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float2x2 {
-    subscript(index: Int) -> simd_float2 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float4x2: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_float2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float2x3 {
-    subscript(index: Int) -> simd_float3 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float2x3: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_float3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float2x4 {
-    subscript(index: Int) -> simd_float4 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float3x3: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_float3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float3x2 {
-    subscript(index: Int) -> simd_float2 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float4x3: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_float3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float3x3 {
-    subscript(index: Int) -> simd_float3 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float2x4: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_float4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float3x4 {
-    subscript(index: Int) -> simd_float4 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float3x4: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_float4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float4x2 {
-    subscript(index: Int) -> simd_float2 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_float4x4: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_float4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float4x3 {
-    subscript(index: Int) -> simd_float3 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_double2x2: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_double2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }
 
-public extension simd_float4x4 {
-    subscript(index: Int) -> simd_float4 {
-        return get(index: index,
-                   in: self.columns)
+extension simd_double3x2: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_double2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double4x2: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_double2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double2x3: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_double3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double3x3: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_double3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double4x3: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_double3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double2x4: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_double4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double3x4: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_double4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_double4x4: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_double4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int2x2: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_int2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int3x2: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_int2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int4x2: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_int2 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int2x3: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_int3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int3x3: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_int3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int4x3: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_int3 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int2x4: SIMDMatrix, Equatable {
+    public static let columnCount = 2
+
+    public subscript(index: Int) -> simd_int4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int3x4: SIMDMatrix, Equatable {
+    public static let columnCount = 3
+
+    public subscript(index: Int) -> simd_int4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+extension simd_int4x4: SIMDMatrix, Equatable {
+    public static let columnCount = 4
+
+    public subscript(index: Int) -> simd_int4 {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
     }
 }

@@ -61,6 +61,20 @@ internal class simdFilamentTests: XCTestCase {
         }
     }
 
+    internal func testCast() {
+        let columns = [
+            simd_float3(1.0, 2.1, 3.0),
+            simd_float3(4.0, 5.0, 6.8),
+        ]
+        let matFloat = simd_float2x3(columns[0],
+                                     columns[1])
+        let matInt = simd_int2x3(matFloat)
+        let expected = simd_int2x3(simd_int3(1, 2, 3),
+                                   simd_int3(4, 5, 6))
+
+        XCTAssertEqual(matInt, expected)
+    }
+
     internal func testAbs() {
         let v4 = simd_float4(-1.0, 2.0, -3.0, 4.0)
         let abs4 = simd_abs(v4)
