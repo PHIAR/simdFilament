@@ -1,6 +1,6 @@
 #pragma once
 
-#define SIMD_ATTRIBUTES __attribute__((always_inline))
+#define SIMD_ATTRIBUTES __attribute__((always_inline, const))
 #define SIMD_OVERLOADABLE static inline SIMD_ATTRIBUTES __attribute__((overloadable))
 
 #pragma mark Float
