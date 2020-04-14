@@ -7,8 +7,15 @@ internal class simdFilamentTests: XCTestCase {
         ("testConstruct3", testConstruct3),
         ("testConstruct4", testConstruct4),
         ("testConstruct4x4", testConstruct4x4),
+        ("testCast", testCast),
+        ("testAbs", testAbs),
+        ("testClamp", testClamp),
+        ("testMix", testMix),
+        ("testSign", testSign),
+        ("testClamp", testClamp),
         ("testDot", testDot),
         ("testCross", testCross),
+        ("testDistance", testDistance),
     ]
 
     private static let accuracy = Float(1e-3)
