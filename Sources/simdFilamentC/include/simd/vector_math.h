@@ -153,9 +153,9 @@ extern "C"
         return 1.f / sqrtf(x);
     }
 
-    float SIMD_OVERLOADABLE
+    double SIMD_OVERLOADABLE
     simd_rsqrt(double x) {
-        return 1.f / sqrt(x);
+        return 1. / sqrt(x);
     }
 
     ALL_UNARY_OPS(simd_rsqrt, float, simd_rsqrt(_x))

@@ -16,6 +16,8 @@ internal class simdFilamentTests: XCTestCase {
         ("testDot", testDot),
         ("testCross", testCross),
         ("testDistance", testDistance),
+        ("testNormalize", testNormalize),
+        ("testProject", testProject),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -155,6 +157,31 @@ internal class simdFilamentTests: XCTestCase {
 
         XCTAssertEqual(distance,
                        expected,
+                       accuracy: simdFilamentTests.accuracy)
+    }
+
+    internal func testNormalize() {
+        let vec = simd_float3(1.0, 2.0, 3.0)
+        let normalized = simd_normalize(vec)
+
+        XCTAssertEqual(simd_length(normalized),
+                       1.0,
+                       accuracy: simdFilamentTests.accuracy)
+        XCTAssertEqual(simd_dot(vec, normalized),
+                       simd_length(vec),
+                       accuracy: simdFilamentTests.accuracy)
+    }
+
+    internal func testProject() {
+        let vec1 = simd_float2(1.0, 2.0)
+        let vec2 = simd_float2(3.0, 4.0)
+        let vec1Proj2 = simd_project(vec1, vec2)
+
+        XCTAssertEqual(simd_cross(vec1Proj2, vec2).z,
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+        XCTAssertEqual(simd_dot(vec1 - vec1Proj2, vec2),
+                       0.0,
                        accuracy: simdFilamentTests.accuracy)
     }
 }

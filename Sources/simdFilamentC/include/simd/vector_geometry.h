@@ -4,9 +4,34 @@
 #include "simd/vector_math.h"
 #include "simd/vector_reduce.h"
 
+#define UNARY_OP(name, base_type, op, dimensions, extra...) \
+    simd_ ## base_type ## dimensions SIMD_OVERLOADABLE \
+    name(simd_ ## base_type ## dimensions _x, \
+         ##extra) { \
+        return op; \
+    }
+
+#define ALL_UNARY_OPS(name, base_type, op, extra...) \
+    UNARY_OP(name, base_type, op, 2, ##extra) \
+    UNARY_OP(name, base_type, op, 3, ##extra) \
+    UNARY_OP(name, base_type, op, 4, ##extra)
+
+#define BINARY_OP(name, base_type, op, dimensions, extra...) \
+    simd_ ## base_type ## dimensions SIMD_OVERLOADABLE \
+    name(simd_ ## base_type ## dimensions _x, \
+         simd_ ## base_type ## dimensions _y, \
+         ##extra) { \
+        return op; \
+    }
+
+#define ALL_BINARY_OPS(name, base_type, op, extra...) \
+    BINARY_OP(name, base_type, op, 2, ##extra) \
+    BINARY_OP(name, base_type, op, 3, ##extra) \
+    BINARY_OP(name, base_type, op, 4, ##extra)
+
 #define UNARY_REDUCE_OP(name, base_type, op, dimensions, extra...) \
     base_type SIMD_OVERLOADABLE \
-    name(simd_ ## base_type ## dimensions _x \
+    name(simd_ ## base_type ## dimensions _x, \
          ##extra) { \
         return op; \
     }
@@ -55,6 +80,12 @@ extern "C"
     ALL_BINARY_REDUCE_OPS(simd_distance, float, simd_length(_y - _x))
     ALL_BINARY_REDUCE_OPS(simd_distance, double, simd_length(_y - _x))
 
+    ALL_UNARY_OPS(simd_normalize, float, _x * simd_rsqrt(simd_length_squared(_x)))
+    ALL_UNARY_OPS(simd_normalize, double, _x * simd_rsqrt(simd_length_squared(_x)))
+
+    ALL_BINARY_OPS(simd_project, float, _y * simd_dot(_x, _y) / simd_length_squared(_y))
+    ALL_BINARY_OPS(simd_project, double, _y * simd_dot(_x, _y) / simd_length_squared(_y))
+
     simd_float3 SIMD_ATTRIBUTES
     simd_cross2(simd_float2 a, simd_float2 b);
 
@@ -77,6 +108,10 @@ extern "C"
 }
 #endif
 
+#undef UNARY_OP
+#undef ALL_UNARY_OPS
+#undef BINARY_OP
+#undef ALL_BINARY_OPS
 #undef UNARY_REDUCE_OP
 #undef ALL_UNARY_REDUCE_OPS
 #undef BINARY_REDUCE_OP
