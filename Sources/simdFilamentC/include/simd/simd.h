@@ -8,3 +8,4 @@
 
 #include "simd/matrix_casts.h"
 #include "simd/matrix_constructors.h"
+#include "simd/matrix_math.h"
