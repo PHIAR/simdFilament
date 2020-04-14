@@ -84,6 +84,29 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(abs4, simd_float4(1.0, 2.0, 3.0, 4.0))
     }
 
+    internal func testClamp() {
+        let vec = simd_float4(-1.0, 2.0, -3.0, 4.0)
+        let clamped = simd_clamp(vec, -0.5, 3.0)
+
+        XCTAssertEqual(clamped, simd_float4(-0.5, 2.0, -0.5, 3.0))
+    }
+
+    internal func testSign() {
+        let vec = simd_float4(-1.0, 2.0, .nan, 0.0)
+        let abs4 = simd_sign(vec)
+
+        XCTAssertEqual(abs4, simd_float4(-1.0, 1.0, 0.0, 0.0))
+    }
+
+    internal func testTrig() {
+        let vec = simd_float2(0.0, 0.5 * .pi)
+        let cosVec = cos(vec)
+        let expected = simd_float2(1.0, 0.0)
+
+        XCTAssertEqual(cosVec[0], expected[0], accuracy: simdFilamentTests.accuracy)
+        XCTAssertEqual(cosVec[1], expected[1], accuracy: simdFilamentTests.accuracy)
+    }
+
     internal func testDot() {
         let a = simd_float2(1.0, 2.0)
         let b = simd_float2(2.0, 3.0)
