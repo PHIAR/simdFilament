@@ -9,7 +9,7 @@
     simd_ ## base_type ## dimensions SIMD_OVERLOADABLE \
     name(simd_ ## base_type ## dimensions v, ##extra) { \
         for (int _i = 0; _i < dimensions; ++_i) { \
-            typeof(v[_i]) _x = v[_i]; \
+            __typeof__(v[_i]) _x = v[_i]; \
             v[_i] = op; \
         } \
         return v; \
@@ -26,8 +26,8 @@
          simd_ ## base_type ## dimensions b, \
          ##extra) { \
         for (int _i = 0; _i < dimensions; ++_i) { \
-            typeof(a[_i]) _x = a[_i]; \
-            typeof(b[_i]) _y = a[_i]; \
+            __typeof__(a[_i]) _x = a[_i]; \
+            __typeof__(b[_i]) _y = a[_i]; \
             a[_i] = op; \
         } \
         return a; \
