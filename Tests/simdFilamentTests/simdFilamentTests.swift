@@ -91,6 +91,16 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(clamped, simd_float4(-0.5, 2.0, -0.5, 3.0))
     }
 
+    internal func testMix() {
+        let a = simd_float4(1.0, 2.0, 3.0, 4.0)
+        let b = simd_float4(5.0, 6.0, 7.0, 8.0)
+        let t = simd_float4(0.0, 1.0, 0.5, 0.5)
+        let mix = simd_mix(a, b, t)
+        let expected = simd_float4(1.0, 6.0, 5.0, 6.0)
+
+        XCTAssertEqual(mix, expected)
+    }
+
     internal func testSign() {
         let vec = simd_float4(-1.0, 2.0, .nan, 0.0)
         let abs4 = simd_sign(vec)

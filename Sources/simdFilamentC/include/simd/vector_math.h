@@ -160,6 +160,54 @@ extern "C"
 
     ALL_UNARY_OPS(simd_rsqrt, float, simd_rsqrt(_x))
     ALL_UNARY_OPS(simd_rsqrt, double, simd_rsqrt(_x))
+
+    float SIMD_OVERLOADABLE
+    mix(float a, float b, float t)
+    {
+        return a + t * (b - a);
+    }
+
+    simd_float2 SIMD_OVERLOADABLE
+    simd_mix(simd_float2 a, simd_float2 b, simd_float2 t)
+    {
+        return a + t * (b - a);
+    }
+
+    simd_float3 SIMD_OVERLOADABLE
+    simd_mix(simd_float3 a, simd_float3 b, simd_float3 t)
+    {
+        return a + t * (b - a);
+    }
+
+    simd_float4 SIMD_OVERLOADABLE
+    simd_mix(simd_float4 a, simd_float4 b, simd_float4 t)
+    {
+        return a + t * (b - a);
+    }
+
+    double SIMD_OVERLOADABLE
+    simd_mix(double a, double b, double t)
+    {
+        return a + t * (b - a);
+    }
+
+    simd_double2 SIMD_OVERLOADABLE
+    simd_mix(simd_double2 a, simd_double2 b, simd_double2 t)
+    {
+        return a + t * (b - a);
+    }
+
+    simd_double3 SIMD_OVERLOADABLE
+    simd_mix(simd_double3 a, simd_double3 b, simd_double3 t)
+    {
+        return a + t * (b - a);
+    }
+
+    simd_double4 SIMD_OVERLOADABLE
+    simd_mix(simd_double4 a, simd_double4 b, simd_double4 t)
+    {
+        return a + t * (b - a);
+    }
 #ifdef __cplusplus
 }
 #endif
