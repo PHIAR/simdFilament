@@ -1,24 +1,5 @@
 @_exported import simdFilamentC
 
-public protocol SIMDMatrix {
-    associatedtype Column
-    static var columnCount: Int { get }
-
-    subscript(index: Int) -> Column { get set }
-}
-
-public extension SIMDMatrix where Column: SIMD {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        for i in 0..<self.columnCount {
-            guard lhs[i] == rhs[i] else {
-                return false
-            }
-        }
-
-        return true
-    }
-}
-
 extension simd_float2x2: SIMDMatrix, Equatable {
     public static let columnCount = 2
 
