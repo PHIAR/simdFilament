@@ -25,9 +25,9 @@ typedef struct { simd_float4 vector; } simd_quatf;
 
 #pragma mark Double
 
-typedef __attribute__((ext_vector_type(2))) double simd_double2;
-typedef __attribute__((ext_vector_type(3))) double simd_double3;
-typedef __attribute__((ext_vector_type(4))) double simd_double4;
+typedef __attribute__((ext_vector_type(2),aligned(16))) double simd_double2;
+typedef __attribute__((ext_vector_type(3),aligned(16))) double simd_double3;
+typedef __attribute__((ext_vector_type(4),aligned(16))) double simd_double4;
 
 typedef struct { simd_double2 columns[2]; } simd_double2x2;
 typedef struct { simd_double2 columns[3]; } simd_double3x2;
