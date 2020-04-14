@@ -18,6 +18,8 @@ internal class simdFilamentTests: XCTestCase {
         ("testDistance", testDistance),
         ("testNormalize", testNormalize),
         ("testProject", testProject),
+        ("testMatrixVectorProduct", testMatrixVectorProduct),
+        ("testMatrixMatrixProduct", testMatrixMatrixProduct),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -183,5 +185,44 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(simd_dot(vec1 - vec1Proj2, vec2),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
+    }
+
+    internal func testMatrixVectorProduct() {
+        let mat = simd_float2x2(simd_float2(1.0, 2.0),
+                                simd_float2(3.0, 4.0))
+        let vec = simd_float2(1.0, 2.0)
+        let prod = simd_mul(mat, vec)
+        let prodTranspose = simd_mul(vec, mat)
+
+        XCTAssertEqual(prod, simd_float2(7.0, 10.0))
+        XCTAssertEqual(prodTranspose, simd_float2(5.0, 11.0))
+    }
+
+    internal func testMatrixMatrixProduct() {
+        let mat1 = simd_float4x2(simd_float2(1.0, 2.0),
+                                 simd_float2(3.0, 4.0),
+                                 simd_float2(5.0, 6.0),
+                                 simd_float2(7.0, 8.0))
+        let mat2 = simd_float2x3(simd_float3(1.0, 2.0, 3.0),
+                                 simd_float3(4.0, 5.0, 6.0))
+        let prod = simd_mul(mat2, mat1)
+        let expected = simd_float4x3(simd_float3(9.0, 12.0, 15.0),
+                                     simd_float3(19.0, 26.0, 33.0),
+                                     simd_float3(29.0, 40.0, 51.0),
+                                     simd_float3(39.0, 54.0, 69.0))
+
+        XCTAssertEqual(prod, expected)
+    }
+
+    internal func testTranspose() {
+        let mat = simd_float4x2(simd_float2(1.0, 2.0),
+                                simd_float2(3.0, 4.0),
+                                simd_float2(5.0, 6.0),
+                                simd_float2(7.0, 8.0))
+        let transposed = mat.transpose
+        let expected = simd_float2x4(simd_float4(1.0, 3.0, 5.0, 7.0),
+                                     simd_float4(2.0, 4.0, 6.0, 8.0))
+
+        XCTAssertEqual(transposed, expected)
     }
 }

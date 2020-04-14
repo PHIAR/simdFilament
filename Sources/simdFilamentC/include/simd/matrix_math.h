@@ -3,6 +3,30 @@
 #include "simd/types.h"
 #include "simd/vector_math.h"
 
+#define MAT_UNARY_OPS(base_type, rows ,cols) \
+    __attribute__((swift_name("getter:simd_" #base_type #cols "x" #rows ".transpose(self:)"))) \
+    simd_ ## base_type ## rows ## x ## cols SIMD_OVERLOADABLE \
+    simd_transpose(simd_ ## base_type ## cols ## x ## rows m) \
+    { \
+        simd_ ## base_type ## rows ## x ## cols out; \
+        for (int col = 0; col < cols; ++col) { \
+            for (int row = 0; row < rows; ++row) { \
+                out.columns[row][col] = m.columns[col][row]; \
+            } \
+        } \
+        return out; \
+    }
+
+#define MAT_UNARY_OPS_ALL_COLS(base_type, rows) \
+    MAT_UNARY_OPS(base_type, rows, 2) \
+    MAT_UNARY_OPS(base_type, rows, 3) \
+    MAT_UNARY_OPS(base_type, rows, 4)
+
+#define MAT_UNARY_OPS_ALL_DIMS(base_type) \
+    MAT_UNARY_OPS_ALL_COLS(base_type, 2) \
+    MAT_UNARY_OPS_ALL_COLS(base_type, 3) \
+    MAT_UNARY_OPS_ALL_COLS(base_type, 4)
+
 #define MAT_VEC_PRODS(base_type, rows ,cols) \
     simd_ ## base_type ## cols SIMD_OVERLOADABLE \
     simd_mul(simd_ ## base_type ## rows v, \
@@ -66,6 +90,9 @@ extern "C"
 {
 #endif
 
+    MAT_UNARY_OPS_ALL_DIMS(float)
+    MAT_UNARY_OPS_ALL_DIMS(double)
+
     MAT_VEC_PRODS_ALL_DIMS(float)
     MAT_VEC_PRODS_ALL_DIMS(double)
 
@@ -76,6 +103,9 @@ extern "C"
 }
 #endif
 
+#undef MAT_UNARY_OPS
+#undef MAT_UNARY_OPS_ALL_COLS
+#undef MAT_UNARY_OPS_ALL_DIMS
 #undef MAT_VEC_PRODS
 #undef MAT_VEC_PRODS_ALL_COLS
 #undef MAT_VEC_PRODS_ALL_DIMS
