@@ -12,7 +12,7 @@ internal class simdFilamentTests: XCTestCase {
         ("testClamp", testClamp),
         ("testMix", testMix),
         ("testSign", testSign),
-        ("testClamp", testClamp),
+        ("testTrig", testTrig),
         ("testDot", testDot),
         ("testCross", testCross),
         ("testDistance", testDistance),
@@ -22,6 +22,7 @@ internal class simdFilamentTests: XCTestCase {
         ("testMatrixMatrixProduct", testMatrixMatrixProduct),
         ("testTranspose", testTranspose),
         ("testAlmostEqual", testAlmostEqual),
+        ("testInverse", testInverse),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -241,5 +242,19 @@ internal class simdFilamentTests: XCTestCase {
 
         test[1, 2] = mat[1, 2] + 1.0
         XCTAssertFalse(simd_almost_equal_elements(mat, test, 0.1))
+    }
+
+    internal func testInverse() {
+        let mat = simd_float3x3(simd_float3(1.0, 4.0, 0.0),
+                                simd_float3(2.0, 5.0, 0.0),
+                                simd_float3(3.0, 6.0, 1.0))
+        let inverse = mat.inverse
+
+        print(inverse)
+        print(simd_mul(mat, inverse))
+
+        XCTAssertTrue(simd_almost_equal_elements(simd_mul(mat, inverse),
+                                                 matrix_identity_float3x3,
+                                                 simdFilamentTests.accuracy))
     }
 }
