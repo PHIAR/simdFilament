@@ -2,8 +2,9 @@
 
 #include "simd/types.h"
 #include "simd/vector_math.h"
+#include "simd/vector_geometry.h"
 
-#define MAT_UNARY_OPS(base_type, rows ,cols) \
+#define MAT_UNARY_OPS(base_type, rows, cols) \
     __attribute__((swift_name("getter:simd_" #base_type #cols "x" #rows ".transpose(self:)"))) \
     simd_ ## base_type ## rows ## x ## cols SIMD_OVERLOADABLE \
     simd_transpose(simd_ ## base_type ## cols ## x ## rows m) \
@@ -26,6 +27,48 @@
     MAT_UNARY_OPS_ALL_COLS(base_type, 2) \
     MAT_UNARY_OPS_ALL_COLS(base_type, 3) \
     MAT_UNARY_OPS_ALL_COLS(base_type, 4)
+
+#define MAT_BINARY_OPS(base_type, rows, cols) \
+    simd_ ## base_type ## cols ## x ## rows SIMD_OVERLOADABLE \
+    simd_add(simd_ ## base_type ## cols ## x ## rows a, \
+             simd_ ## base_type ## cols ## x ## rows b) \
+    { \
+        simd_ ## base_type ## cols ## x ## rows out; \
+        for (int i = 0; i < cols; ++i) { \
+            out.columns[i] = a.columns[i] + b.columns[i]; \
+        } \
+        return out; \
+    } \
+    simd_ ## base_type ## cols ## x ## rows SIMD_OVERLOADABLE \
+    simd_sub(simd_ ## base_type ## cols ## x ## rows a, \
+             simd_ ## base_type ## cols ## x ## rows b) \
+    { \
+        simd_ ## base_type ## cols ## x ## rows out; \
+        for (int i = 0; i < cols; ++i) { \
+            out.columns[i] = a.columns[i] - b.columns[i]; \
+        } \
+        return out; \
+    } \
+    simd_bool SIMD_OVERLOADABLE \
+    simd_almost_equal_elements(simd_ ## base_type ## cols ## x ## rows a, \
+                               simd_ ## base_type ## cols ## x ## rows b, \
+                               base_type tol) \
+    { \
+        for (int i = 0; i < cols; ++i) { \
+            if (simd_norm_inf(a.columns[i] - b.columns[i]) > tol) return 0; \
+        } \
+        return 1; \
+    }
+
+#define MAT_BINARY_OPS_ALL_COLS(base_type, rows) \
+    MAT_BINARY_OPS(base_type, rows, 2) \
+    MAT_BINARY_OPS(base_type, rows, 3) \
+    MAT_BINARY_OPS(base_type, rows, 4)
+
+#define MAT_BINARY_OPS_ALL_DIMS(base_type) \
+    MAT_BINARY_OPS_ALL_COLS(base_type, 2) \
+    MAT_BINARY_OPS_ALL_COLS(base_type, 3) \
+    MAT_BINARY_OPS_ALL_COLS(base_type, 4)
 
 #define MAT_VEC_PRODS(base_type, rows ,cols) \
     simd_ ## base_type ## cols SIMD_OVERLOADABLE \
@@ -93,6 +136,9 @@ extern "C"
     MAT_UNARY_OPS_ALL_DIMS(float)
     MAT_UNARY_OPS_ALL_DIMS(double)
 
+    MAT_BINARY_OPS_ALL_DIMS(float)
+    MAT_BINARY_OPS_ALL_DIMS(double)
+
     MAT_VEC_PRODS_ALL_DIMS(float)
     MAT_VEC_PRODS_ALL_DIMS(double)
 
@@ -106,6 +152,9 @@ extern "C"
 #undef MAT_UNARY_OPS
 #undef MAT_UNARY_OPS_ALL_COLS
 #undef MAT_UNARY_OPS_ALL_DIMS
+#undef MAT_BINARY_OPS
+#undef MAT_BINARY_OPS_ALL_COLS
+#undef MAT_BINARY_OPS_ALL_DIMS
 #undef MAT_VEC_PRODS
 #undef MAT_VEC_PRODS_ALL_COLS
 #undef MAT_VEC_PRODS_ALL_DIMS

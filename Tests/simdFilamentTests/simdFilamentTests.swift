@@ -20,6 +20,8 @@ internal class simdFilamentTests: XCTestCase {
         ("testProject", testProject),
         ("testMatrixVectorProduct", testMatrixVectorProduct),
         ("testMatrixMatrixProduct", testMatrixMatrixProduct),
+        ("testTranspose", testTranspose),
+        ("testAlmostEqual", testAlmostEqual),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -224,5 +226,20 @@ internal class simdFilamentTests: XCTestCase {
                                      simd_float4(2.0, 4.0, 6.0, 8.0))
 
         XCTAssertEqual(transposed, expected)
+    }
+
+    internal func testAlmostEqual() {
+        let mat = simd_float3x3(simd_float3(1.0, 2.0, 3.0),
+                                simd_float3(4.0, 5.0, 6.0),
+                                simd_float3(7.0, 8.0, 9.0))
+        var test = mat
+
+        XCTAssertTrue(simd_almost_equal_elements(mat, test, 0.0))
+
+        test[1, 2] = mat[1, 2] + 0.1
+        XCTAssertTrue(simd_almost_equal_elements(mat, test, 0.1))
+
+        test[1, 2] = mat[1, 2] + 1.0
+        XCTAssertFalse(simd_almost_equal_elements(mat, test, 0.1))
     }
 }

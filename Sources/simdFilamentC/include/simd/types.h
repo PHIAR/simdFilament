@@ -2,6 +2,13 @@
 
 #define SIMD_ATTRIBUTES __attribute__((always_inline, const))
 #define SIMD_OVERLOADABLE static inline SIMD_ATTRIBUTES __attribute__((overloadable))
+#define SIMD_OVERLOADABLE_NOINLINE SIMD_ATTRIBUTES __attribute__((overloadable))
+
+#ifdef __cplusplus
+#define simd_bool bool
+#else
+#define simd_bool _Bool
+#endif
 
 #pragma mark Float
 
