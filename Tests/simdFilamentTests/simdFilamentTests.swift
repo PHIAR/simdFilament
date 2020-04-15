@@ -250,9 +250,6 @@ internal class simdFilamentTests: XCTestCase {
                                 simd_float3(3.0, 6.0, 1.0))
         let inverse = mat.inverse
 
-        print(inverse)
-        print(simd_mul(mat, inverse))
-
         XCTAssertTrue(simd_almost_equal_elements(simd_mul(mat, inverse),
                                                  matrix_identity_float3x3,
                                                  simdFilamentTests.accuracy))
