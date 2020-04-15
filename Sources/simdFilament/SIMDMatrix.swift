@@ -1,12 +1,14 @@
 public protocol SIMDMatrix {
-    associatedtype Column
+    associatedtype Column: SIMD
     static var columnCount: Int { get }
     static var rowCount: Int { get }
 
     subscript(index: Int) -> Column { get set }
 }
 
-public extension SIMDMatrix where Column: SIMD {
+public extension SIMDMatrix {
+    typealias Scalar = Column.Scalar
+
     static var rowCount: Int { Self.Column.scalarCount }
 
     static func == (lhs: Self, rhs: Self) -> Bool {
@@ -17,5 +19,10 @@ public extension SIMDMatrix where Column: SIMD {
         }
 
         return true
+    }
+
+    subscript(column: Int, row: Int) -> Column.Scalar {
+        get { self[column][row] }
+        set { self[column][row] = newValue }
     }
 }
