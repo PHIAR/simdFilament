@@ -23,6 +23,10 @@ typedef struct { simd_float4 columns[4]; } simd_float4x4;
 
 typedef struct { simd_float4 vector; } simd_quatf;
 
+extern const simd_float2x2 matrix_identity_float2x2;
+extern const simd_float3x3 matrix_identity_float3x3;
+extern const simd_float4x4 matrix_identity_float4x4;
+
 #pragma mark Double
 
 typedef __attribute__((ext_vector_type(2),aligned(16))) double simd_double2;
@@ -42,6 +46,10 @@ typedef struct { simd_double4 columns[3]; } simd_double3x4;
 typedef struct { simd_double4 columns[4]; } simd_double4x4;
 
 typedef struct { simd_double4 vector; } simd_quatd;
+
+extern const simd_double2x2 matrix_identity_double2x2;
+extern const simd_double3x3 matrix_identity_double3x3;
+extern const simd_double4x4 matrix_identity_double4x4;
 
 #pragma mark Int
 
