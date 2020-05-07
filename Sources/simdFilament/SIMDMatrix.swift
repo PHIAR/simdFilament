@@ -21,6 +21,18 @@ public extension SIMDMatrix {
         return true
     }
 
+    init(_ columns: [SIMD4<Float>]) {
+        preconditionFailure()
+    }
+
+    init(rows: [SIMD4<Float>]) {
+        preconditionFailure()
+    }
+
+    init(_ quaternion: simd_quatf) {
+        preconditionFailure()
+    }
+
     subscript(column: Int, row: Int) -> Column.Scalar {
         get { self[column][row] }
         set { self[column][row] = newValue }
