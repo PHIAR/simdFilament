@@ -155,14 +155,22 @@ internal class simdFilamentTests: XCTestCase {
     }
 
     internal func testDistance() {
-        let a = simd_float3(1.0, 2.0, 3.0)
-        let b = simd_float3(2.0, 1.0, 3.0)
+        let a = simd_float4(0.0, 2.0, 3.0, 1.0)
+        let b = simd_float4(0.0, 1.0, 3.0, 2.0)
         let distance = simd_distance(a, b)
         let expected = Float(sqrt(2.0))
 
         XCTAssertEqual(distance,
                        expected,
                        accuracy: simdFilamentTests.accuracy)
+
+        let distanceSquared = simd_distance_squared(a, b)
+        let expectedSquared = expected * expected
+
+        XCTAssertEqual(distanceSquared,
+                       expectedSquared,
+                       accuracy: simdFilamentTests.accuracy)
+
     }
 
     internal func testNormalize() {
