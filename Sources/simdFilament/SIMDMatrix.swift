@@ -38,3 +38,8 @@ public extension SIMDMatrix {
         set { self[column][row] = newValue }
     }
 }
+
+public func distance_squared(_ lhs: simd_float4,
+                             _ rhs: simd_float4) -> Float {
+    return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z + lhs.w * rhs.w
+}
