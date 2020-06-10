@@ -93,6 +93,12 @@ extern "C"
         return simd_make_float3(x, yz[0], yz[1]);
     }
 
+    simd_float3 SIMD_OVERLOADABLE
+    simd_make_float3(simd_float4 xyzw)
+    {
+        return xyzw.xyz;
+    }
+
     simd_float4 SIMD_OVERLOADABLE
     simd_make_float4(simd_float2 xy)
     {

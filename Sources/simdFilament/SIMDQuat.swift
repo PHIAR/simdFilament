@@ -30,6 +30,14 @@ extension simd_quatd {
 }
 
 public extension simd_quatf {
+    init(_ rotationMatrix: simd_float3x3) {
+        preconditionFailure()
+    }
+
+    init(_ rotationMatrix: simd_float4x4) {
+        preconditionFailure()
+    }
+
     init(angle: Float,
          axis: simd_float3) {
         preconditionFailure()
@@ -55,4 +63,18 @@ extension simd_quatf {
                           rhs: simd_quatf) -> simd_quatf {
         preconditionFailure()
     }
+
+    public static func / (lhs: simd_quatf,
+                          rhs: simd_quatf) -> simd_quatf {
+        preconditionFailure()
+    }
+
+    public static func / (lhs: simd_quatf,
+                          rhs: Float) -> simd_quatf {
+        preconditionFailure()
+    }
+}
+
+public func simd_angle(_ q: simd_quatf) -> Float {
+    preconditionFailure()
 }

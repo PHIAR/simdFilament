@@ -65,6 +65,9 @@ extern "C"
     ALL_UNARY_REDUCE_OPS(simd_length_squared, float, simd_dot(_x, _x))
     ALL_UNARY_REDUCE_OPS(simd_length_squared, double, simd_dot(_x, _x))
 
+    ALL_UNARY_REDUCE_OPS(simd_fast_length, float, sqrtf(simd_length_squared(_x)))
+    ALL_UNARY_REDUCE_OPS(simd_fast_length, double, sqrt(simd_length_squared(_x)))
+
     ALL_UNARY_REDUCE_OPS(simd_length, float, sqrtf(simd_length_squared(_x)))
     ALL_UNARY_REDUCE_OPS(simd_length, double, sqrt(simd_length_squared(_x)))
 
