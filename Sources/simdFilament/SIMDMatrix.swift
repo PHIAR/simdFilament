@@ -50,7 +50,29 @@ extension simd_double3x3 {
     }
 }
 
+extension simd_double4x4 {
+    public static func * (lhs: simd_double4x4,
+                          rhs: simd_double4x4) -> simd_double4x4 {
+        preconditionFailure()
+    }
+}
+
 extension simd_float3x3 {
+    public static func * (lhs: simd_float3x3,
+                          rhs: simd_float3) -> simd_float3 {
+        preconditionFailure()
+    }
+
+    public static func * (lhs: simd_float3,
+                          rhs: simd_float3x3) -> simd_float3 {
+        preconditionFailure()
+    }
+
+    public static func * (lhs: simd_float3x3,
+                          rhs: simd_float3x3) -> simd_float3x3 {
+        preconditionFailure()
+    }
+
     public static func * (lhs: simd_float3x3,
                           rhs: simd_float4x3) -> simd_float4x3 {
         preconditionFailure()
@@ -65,6 +87,16 @@ extension simd_float4x3 {
 }
 
 extension simd_float4x4 {
+    public static func * (lhs: simd_float4x4,
+                          rhs: simd_float4) -> simd_float4 {
+        preconditionFailure()
+    }
+
+    public static func * (lhs: simd_float4,
+                          rhs: simd_float4x4) -> simd_float4 {
+        preconditionFailure()
+    }
+
     public static func * (lhs: simd_float4x4,
                           rhs: simd_float4x4) -> simd_float4x4 {
         preconditionFailure()
