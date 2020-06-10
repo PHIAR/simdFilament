@@ -85,6 +85,28 @@ extension simd_quatf {
     }
 }
 
+extension simd_quatf {
+    public var angle: Float {
+        return simd_angle(self)
+    }
+
+    public var axis: SIMD3 <Float> {
+        preconditionFailure()
+    }
+
+    public var inverse: simd_quatf {
+        preconditionFailure()
+    }
+
+    public var normalized: simd_quatf {
+        preconditionFailure()
+    }
+
+    public func act(_ vector: SIMD3 <Float>) -> SIMD3 <Float> {
+        preconditionFailure()
+    }
+}
+
 public func simd_angle(_ q: simd_quatf) -> Float {
     preconditionFailure()
 }
