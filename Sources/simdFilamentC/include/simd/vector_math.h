@@ -167,6 +167,12 @@ extern "C"
         return a + t * (b - a);
     }
 
+    float SIMD_OVERLOADABLE
+    simd_mix(float a, float b, float t)
+    {
+        return mix(a, b, t);
+    }
+
     simd_float2 SIMD_OVERLOADABLE
     simd_mix(simd_float2 a, simd_float2 b, simd_float2 t)
     {
