@@ -4,7 +4,7 @@
 #include "simd/vector_casts.h"
 
 #define DEFINE_CAST(from, to, to_column_type, num_columns, swift_args) \
-    __attribute__((swift_name("simd_" #to ".init(_:)"))) \
+    SWIFT_NAME("simd_" #to ".init(_:)") \
     simd_ ## to SIMD_OVERLOADABLE \
     simd_make_ ## to (simd_ ## from v) { \
         simd_ ## to out; \

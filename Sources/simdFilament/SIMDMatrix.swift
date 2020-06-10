@@ -21,11 +21,15 @@ public extension SIMDMatrix {
         return true
     }
 
-    init(_ columns: [SIMD4<Float>]) {
+    init <U> (_ columns: [SIMD4 <U>]) {
         preconditionFailure()
     }
 
-    init(rows: [SIMD4<Float>]) {
+    init <U> (_ scalar: U) {
+        preconditionFailure()
+    }
+
+    init <U> (rows: [SIMD4 <U>]) {
         preconditionFailure()
     }
 
@@ -36,5 +40,12 @@ public extension SIMDMatrix {
     subscript(column: Int, row: Int) -> Column.Scalar {
         get { self[column][row] }
         set { self[column][row] = newValue }
+    }
+}
+
+extension simd_float4x4 {
+    public static func * (lhs: simd_float4x4,
+                          rhs: simd_float4x4) -> simd_float4x4 {
+        preconditionFailure()
     }
 }
