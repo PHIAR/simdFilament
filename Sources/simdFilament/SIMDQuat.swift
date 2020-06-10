@@ -43,10 +43,20 @@ public extension simd_quatf {
         preconditionFailure()
     }
 
+    init(from: SIMD3 <Float>,
+         to: SIMD3 <Float>) {
+        preconditionFailure()
+    }
+
     init(ix: Float,
          iy: Float,
          iz: Float,
          r: Float) {
+        preconditionFailure()
+    }
+
+    init(real: Float,
+         imag: SIMD3 <Float>) {
         preconditionFailure()
     }
 }
