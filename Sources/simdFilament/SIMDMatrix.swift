@@ -21,11 +21,15 @@ public extension SIMDMatrix {
         return true
     }
 
-    init(_ columns: [SIMD4<Float>]) {
+    init <U> (_ columns: [SIMD4 <U>]) {
         preconditionFailure()
     }
 
-    init(rows: [SIMD4<Float>]) {
+    init <U> (_ scalar: U) {
+        preconditionFailure()
+    }
+
+    init <U> (rows: [SIMD4 <U>]) {
         preconditionFailure()
     }
 
