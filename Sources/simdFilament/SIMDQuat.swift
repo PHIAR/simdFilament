@@ -107,6 +107,26 @@ extension simd_quatf {
     }
 }
 
+extension simd_quatf: RangeReplaceableCollection {
+    public typealias Element = Float
+    public typealias Index = Int
+
+    public var startIndex: Int { 0 }
+    public var endIndex: Int { 4 }
+
+    public subscript(bounds: Self.Index) -> Self.Element {
+        preconditionFailure()
+    }
+
+    public func append <S: Sequence> (contentsOf newElements: S) where Element == S.Element {
+        preconditionFailure()
+    }
+
+    public func index(after i: Int) -> Int {
+        return i + 1
+    }
+}
+
 public func simd_angle(_ q: simd_quatf) -> Float {
     preconditionFailure()
 }
