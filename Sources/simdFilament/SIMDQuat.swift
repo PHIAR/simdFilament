@@ -63,4 +63,14 @@ extension simd_quatf {
                           rhs: simd_quatf) -> simd_quatf {
         preconditionFailure()
     }
+
+    public static func / (lhs: simd_quatf,
+                          rhs: simd_quatf) -> simd_quatf {
+        preconditionFailure()
+    }
+
+    public static func / (lhs: simd_quatf,
+                          rhs: Float) -> simd_quatf {
+        preconditionFailure()
+    }
 }
