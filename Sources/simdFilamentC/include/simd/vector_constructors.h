@@ -75,6 +75,18 @@ extern "C"
 
 #pragma mark Composite Constructors
 
+    simd_float2 SIMD_OVERLOADABLE
+    simd_make_float2(simd_float3 xyz)
+    {
+        return simd_make_float2(xyz[0], xyz[1]);
+    }
+
+    simd_float2 SIMD_OVERLOADABLE
+    simd_make_float2(simd_float4 xyzw)
+    {
+        return simd_make_float2(xyzw[0], xyzw[1]);
+    }
+
     simd_float3 SIMD_OVERLOADABLE
     simd_make_float3(simd_float2 xy)
     {
@@ -145,6 +157,12 @@ extern "C"
     simd_make_float4(simd_float3 xyz, float w)
     {
         return simd_make_float4(xyz[0], xyz[1], xyz[2], w);
+    }
+
+    simd_float4 SIMD_OVERLOADABLE
+    simd_make_float4(simd_float3 xyz)
+    {
+        return simd_make_float4(xyz, 0);
     }
 
     simd_float4 SIMD_OVERLOADABLE
