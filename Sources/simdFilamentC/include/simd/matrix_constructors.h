@@ -3,7 +3,7 @@
 #include "simd/types.h"
 
 #define CONSTRUCT_2_COLUMNS(type, column_type) \
-    __attribute__((swift_name("simd_" #type ".init(_:_:)"))) \
+    SWIFT_NAME("simd_" #type ".init(_:_:)") \
     simd_ ## type SIMD_OVERLOADABLE \
     simd_make_ ## type(simd_ ## column_type col0, \
                        simd_ ## column_type col1) \
@@ -13,7 +13,7 @@
     } \
 
 #define CONSTRUCT_3_COLUMNS(type, column_type) \
-    __attribute__((swift_name("simd_" #type ".init(_:_:_:)"))) \
+    SWIFT_NAME("simd_" #type ".init(_:_:_:)") \
     simd_ ## type SIMD_OVERLOADABLE \
     simd_make_ ## type(simd_ ## column_type col0, \
                        simd_ ## column_type col1, \
@@ -24,7 +24,7 @@
     } \
 
 #define CONSTRUCT_4_COLUMNS(type, column_type) \
-    __attribute__((swift_name("simd_" #type ".init(_:_:_:_:)"))) \
+    SWIFT_NAME("simd_" #type ".init(_:_:_:_:)") \
     simd_ ## type SIMD_OVERLOADABLE \
     simd_make_ ## type(simd_ ## column_type col0, \
                        simd_ ## column_type col1, \

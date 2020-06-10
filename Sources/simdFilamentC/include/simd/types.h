@@ -4,6 +4,12 @@
 #define SIMD_OVERLOADABLE static inline SIMD_ATTRIBUTES __attribute__((overloadable))
 #define SIMD_OVERLOADABLE_NOINLINE SIMD_ATTRIBUTES __attribute__((overloadable))
 
+#if __has_attribute(swift_name)
+#define SWIFT_NAME(name) __attribute__((swift_name(name)))
+#else
+#define SWIFT_NAME(name)
+#endif
+
 #ifdef __cplusplus
 #define simd_bool bool
 #else

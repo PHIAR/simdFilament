@@ -5,7 +5,7 @@
 #include "simd/vector_geometry.h"
 
 #define MAT_UNARY_OPS(base_type, rows, cols) \
-    __attribute__((swift_name("getter:simd_" #base_type #cols "x" #rows ".transpose(self:)"))) \
+    SWIFT_NAME("getter:simd_" #base_type #cols "x" #rows ".transpose(self:)") \
     simd_ ## base_type ## rows ## x ## cols SIMD_OVERLOADABLE \
     simd_transpose(simd_ ## base_type ## cols ## x ## rows m) \
     { \
@@ -145,27 +145,27 @@ extern "C"
     MAT_PRODS_ALL_DIMS(float)
     MAT_PRODS_ALL_DIMS(double)
 
-    __attribute__((swift_name("getter:simd_float2x2.inverse(self:)")))
+    SWIFT_NAME("getter:simd_float2x2.inverse(self:)")
     simd_float2x2 SIMD_OVERLOADABLE_NOINLINE
     simd_inverse(simd_float2x2 m);
 
-    __attribute__((swift_name("getter:simd_float3x3.inverse(self:)")))
+    SWIFT_NAME("getter:simd_float3x3.inverse(self:)")
     simd_float3x3 SIMD_OVERLOADABLE_NOINLINE
     simd_inverse(simd_float3x3 m);
 
-    __attribute__((swift_name("getter:simd_float4x4.inverse(self:)")))
+    SWIFT_NAME("getter:simd_float4x4.inverse(self:)")
     simd_float4x4 SIMD_OVERLOADABLE_NOINLINE
     simd_inverse(simd_float4x4 m);
 
-    __attribute__((swift_name("getter:simd_double2x2.inverse(self:)")))
+    SWIFT_NAME("getter:simd_double2x2.inverse(self:)")
     simd_double2x2 SIMD_OVERLOADABLE_NOINLINE
     simd_inverse(simd_double2x2 m);
 
-    __attribute__((swift_name("getter:simd_double3x3.inverse(self:)")))
+    SWIFT_NAME("getter:simd_double3x3.inverse(self:)")
     simd_double3x3 SIMD_OVERLOADABLE_NOINLINE
     simd_inverse(simd_double3x3 m);
 
-    __attribute__((swift_name("getter:simd_double4x4.inverse(self:)")))
+    SWIFT_NAME("getter:simd_double4x4.inverse(self:)")
     simd_double4x4 SIMD_OVERLOADABLE_NOINLINE
     simd_inverse(simd_double4x4 m);
 
