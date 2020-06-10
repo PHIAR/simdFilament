@@ -74,3 +74,7 @@ extension simd_quatf {
         preconditionFailure()
     }
 }
+
+public func simd_angle(_ q: simd_quatf) -> Float {
+    preconditionFailure()
+}
