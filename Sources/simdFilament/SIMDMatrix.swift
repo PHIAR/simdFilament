@@ -38,3 +38,10 @@ public extension SIMDMatrix {
         set { self[column][row] = newValue }
     }
 }
+
+extension simd_float4x4 {
+    public static func * (lhs: simd_float4x4,
+                          rhs: simd_float4x4) -> simd_float4x4 {
+        preconditionFailure()
+    }
+}

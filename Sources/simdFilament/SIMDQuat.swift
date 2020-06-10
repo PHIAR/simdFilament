@@ -22,6 +22,13 @@ extension simd_quatd: Equatable {
     }
 }
 
+extension simd_quatd {
+    public static func * (lhs: simd_quatd,
+                          rhs: simd_quatd) -> simd_quatd {
+        preconditionFailure()
+    }
+}
+
 public extension simd_quatf {
     init(angle: Float,
          axis: simd_float3) {
@@ -39,6 +46,13 @@ public extension simd_quatf {
 extension simd_quatf: Equatable {
     public static func == (lhs: simd_quatf,
                            rhs: simd_quatf) -> Bool {
+        preconditionFailure()
+    }
+}
+
+extension simd_quatf {
+    public static func * (lhs: simd_quatf,
+                          rhs: simd_quatf) -> simd_quatf {
         preconditionFailure()
     }
 }
