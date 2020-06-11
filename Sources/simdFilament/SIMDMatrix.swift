@@ -88,6 +88,16 @@ extension simd_float4x3 {
 
 extension simd_float4x4 {
     public static func * (lhs: simd_float4x4,
+                          rhs: Float) -> simd_float4x4 {
+        preconditionFailure()
+    }
+
+    public static func * (lhs: Float,
+                          rhs: simd_float4x4) -> simd_float4x4 {
+        preconditionFailure()
+    }
+
+    public static func * (lhs: simd_float4x4,
                           rhs: simd_float4) -> simd_float4 {
         preconditionFailure()
     }
