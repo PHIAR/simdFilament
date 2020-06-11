@@ -135,3 +135,9 @@ public func simd_quaternion(_ from: simd_float3,
                             _ to: simd_float3) -> simd_quatf {
     preconditionFailure()
 }
+
+public func simd_slerp(_ q0: simd_quatf,
+                       _ q1: simd_quatf,
+                       _ t: Float) -> simd_quatf {
+    preconditionFailure()
+}
