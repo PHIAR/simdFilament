@@ -130,3 +130,8 @@ extension simd_quatf: RangeReplaceableCollection {
 public func simd_angle(_ q: simd_quatf) -> Float {
     preconditionFailure()
 }
+
+public func simd_quaternion(_ from: simd_float3,
+                            _ to: simd_float3) -> simd_quatf {
+    preconditionFailure()
+}
