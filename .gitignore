@@ -6,3 +6,5 @@
 tags
 xcuserdata/
 DerivedData/
+.devcontainer
+.vscode
