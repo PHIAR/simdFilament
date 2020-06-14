@@ -67,11 +67,44 @@ internal class simdFilamentTests: XCTestCase {
 
     internal func testConstruct4x4() {
         let column = simd_float4(1.0, 1.0, 1.0, 1.0)
-        let a = simd_float4x4(column, 2.0 * column, 3.0 * column, 4.0 * column)
+        let columnsArray = (1...4).map { Float($0) * column }
+
+        let fromArray = simd_float4x4(columnsArray)
 
         for i in 0..<4 {
-            XCTAssertEqual(a[i], Float(i + 1) * column)
-            XCTAssertEqual(a[i], Float(i + 1) * column)
+            XCTAssertEqual(fromArray[i], Float(i + 1) * column)
+            XCTAssertEqual(fromArray[i], Float(i + 1) * column)
+        }
+
+        let fromArguments = simd_float4x4(columnsArray[0],
+                                          columnsArray[1],
+                                          columnsArray[2],
+                                          columnsArray[3])
+
+        for i in 0..<4 {
+            XCTAssertEqual(fromArguments[i], Float(i + 1) * column)
+            XCTAssertEqual(fromArguments[i], Float(i + 1) * column)
+        }
+
+        let asTuple = (columnsArray[0], columnsArray[1], columnsArray[2], columnsArray[3])
+        let fromTuple = simd_float4x4(columns: asTuple)
+
+        for i in 0..<4 {
+            XCTAssertEqual(fromTuple[i], Float(i + 1) * column)
+            XCTAssertEqual(fromTuple[i], Float(i + 1) * column)
+        }
+
+        let asRowsArray = (0..<4).map {
+            simd_float4(columnsArray[0][$0],
+                        columnsArray[1][$0],
+                        columnsArray[2][$0],
+                        columnsArray[3][$0])
+        }
+        let fromRows = simd_float4x4(rows: asRowsArray)
+
+        for i in 0..<4 {
+            XCTAssertEqual(fromRows[i], Float(i + 1) * column)
+            XCTAssertEqual(fromRows[i], Float(i + 1) * column)
         }
     }
 
@@ -216,13 +249,17 @@ internal class simdFilamentTests: XCTestCase {
                                  simd_float2(7.0, 8.0))
         let mat2 = simd_float2x3(simd_float3(1.0, 2.0, 3.0),
                                  simd_float3(4.0, 5.0, 6.0))
-        let prod = simd_mul(mat2, mat1)
         let expected = simd_float4x3(simd_float3(9.0, 12.0, 15.0),
                                      simd_float3(19.0, 26.0, 33.0),
                                      simd_float3(29.0, 40.0, 51.0),
                                      simd_float3(39.0, 54.0, 69.0))
+        let prod = simd_mul(mat2, mat1)
 
         XCTAssertEqual(prod, expected)
+
+        let prodOperator = mat2 * mat1
+
+        XCTAssertEqual(prodOperator, expected)
     }
 
     internal func testTranspose() {

@@ -1,0 +1,15 @@
+import simdFilamentC
+
+% for type in ('float', 'double'):
+%     for rowsA in range(2, 5):
+%         for common in range(2, 5):
+%             for colsB in range(2, 5):
+public func * (lhs: simd_${type}${common}x${rowsA},
+               rhs: simd_${type}${colsB}x${common}) -> simd_${type}${colsB}x${rowsA} {
+    return simd_mul(lhs, rhs)
+}
+
+%             end
+%         end
+%     end
+% end

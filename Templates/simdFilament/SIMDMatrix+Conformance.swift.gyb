@@ -1,0 +1,30 @@
+import simdFilamentC
+
+% for type in ('float', 'double', 'int', 'uint'):
+%     for cols in range(2, 5):
+%         for rows in range(2, 5):
+%             column_type = 'simd_{}{}'.format(type, rows)
+%             matrix_type = 'simd_{}{}x{}'.format(type, cols, rows)
+%             transpose_type = 'simd_{}{}x{}'.format(type, rows, cols)
+extension ${matrix_type}: SIMDMatrix, Equatable {
+    public typealias Transpose = ${transpose_type}
+
+    public static let columnCount = ${cols}
+
+    public subscript(index: Int) -> ${column_type} {
+        get {
+            get(index: index,
+                in: self.columns)
+        }
+
+        set {
+            set(index: index,
+                in: &self.columns,
+                value: newValue)
+        }
+    }
+}
+
+%         end
+%     end
+% end

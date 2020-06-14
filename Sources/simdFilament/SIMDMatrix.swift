@@ -1,7 +1,12 @@
 public protocol SIMDMatrix {
     associatedtype Column: SIMD
+    associatedtype Transpose: SIMDMatrix
     static var columnCount: Int { get }
     static var rowCount: Int { get }
+
+    var transpose: Transpose { get }
+
+    init(_ columns: [Column])
 
     subscript(index: Int) -> Column { get set }
 }
@@ -21,16 +26,8 @@ public extension SIMDMatrix {
         return true
     }
 
-    init <U> (_ columns: [SIMD4 <U>]) {
-        preconditionFailure()
-    }
-
-    init <U> (_ scalar: U) {
-        preconditionFailure()
-    }
-
-    init <U> (rows: [SIMD4 <U>]) {
-        preconditionFailure()
+    init (rows: [Transpose.Column]) {
+        self = Transpose.init(rows).transpose as! Self
     }
 
     init(_ quaternion: simd_quatf) {
@@ -40,75 +37,5 @@ public extension SIMDMatrix {
     subscript(column: Int, row: Int) -> Column.Scalar {
         get { self[column][row] }
         set { self[column][row] = newValue }
-    }
-}
-
-extension simd_double3x3 {
-    public static func * (lhs: simd_double3x3,
-                          rhs: simd_double3x3) -> simd_double3x3 {
-        preconditionFailure()
-    }
-}
-
-extension simd_double4x4 {
-    public static func * (lhs: simd_double4x4,
-                          rhs: simd_double4x4) -> simd_double4x4 {
-        preconditionFailure()
-    }
-}
-
-extension simd_float3x3 {
-    public static func * (lhs: simd_float3x3,
-                          rhs: simd_float3) -> simd_float3 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: simd_float3,
-                          rhs: simd_float3x3) -> simd_float3 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: simd_float3x3,
-                          rhs: simd_float3x3) -> simd_float3x3 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: simd_float3x3,
-                          rhs: simd_float4x3) -> simd_float4x3 {
-        preconditionFailure()
-    }
-}
-
-extension simd_float4x3 {
-    public static func * (lhs: simd_float4x3,
-                          rhs: simd_float4x4) -> simd_float4x3 {
-        preconditionFailure()
-    }
-}
-
-extension simd_float4x4 {
-    public static func * (lhs: simd_float4x4,
-                          rhs: Float) -> simd_float4x4 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: Float,
-                          rhs: simd_float4x4) -> simd_float4x4 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: simd_float4x4,
-                          rhs: simd_float4) -> simd_float4 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: simd_float4,
-                          rhs: simd_float4x4) -> simd_float4 {
-        preconditionFailure()
-    }
-
-    public static func * (lhs: simd_float4x4,
-                          rhs: simd_float4x4) -> simd_float4x4 {
-        preconditionFailure()
     }
 }

@@ -1,0 +1,24 @@
+import simdFilamentC
+
+% for type in ('float', 'double', 'int', 'uint'):
+%     for cols in range(2, 5):
+%         for rows in range(2, 5):
+%             column_type = 'simd_{}{}'.format(type, rows)
+%             row_type = 'simd_{}{}'.format(type, cols)
+%             matrix_type = 'simd_{}{}x{}'.format(type, cols, rows)
+public extension ${matrix_type} {
+    init(_ columns: [${column_type}]) {
+        let asTuple = (
+            % for i in range(cols):
+            %     sep = ',' if i < cols - 1 else ''
+            columns[${i}]${sep}
+            % end
+        )
+
+        self = ${matrix_type}(columns: asTuple)
+    }
+}
+
+%         end
+%     end
+% end

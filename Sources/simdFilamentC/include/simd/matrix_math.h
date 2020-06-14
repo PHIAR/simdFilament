@@ -135,6 +135,8 @@ extern "C"
 
     MAT_UNARY_OPS_ALL_DIMS(float)
     MAT_UNARY_OPS_ALL_DIMS(double)
+    MAT_UNARY_OPS_ALL_DIMS(int)
+    MAT_UNARY_OPS_ALL_DIMS(uint)
 
     MAT_BINARY_OPS_ALL_DIMS(float)
     MAT_BINARY_OPS_ALL_DIMS(double)
