@@ -10,21 +10,21 @@ extern "C"
 #endif
 
 % for name, type in [('quatf', 'float'), ('quatd', 'double')]:
-__attribute__((swift_name("simd_${name}.init(ix:iy:iz:r:)")))
+SWIFT_NAME("simd_${name}.init(ix:iy:iz:r:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(${type} ix, ${type} iy, ${type} iz, ${type} r)
 {
     return (simd_${name}) { .vector = { ix, iy, iz, r } };
 }
 
-__attribute__((swift_name("simd_${name}.init(_:)")))
+SWIFT_NAME("simd_${name}.init(_:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(const ${type} *xyzr)
 {
     return (simd_${name}) { .vector = simd_make_${type}4(xyzr) };
 }
 
-__attribute__((swift_name("simd_${name}.init(_:)")))
+SWIFT_NAME("simd_${name}.init(_:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(simd_${type}4 xyzr)
 {
@@ -32,7 +32,7 @@ simd_quaternion(simd_${type}4 xyzr)
 }
 
 // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-__attribute__((swift_name("simd_${name}.init(angle:axis:)")))
+SWIFT_NAME("simd_${name}.init(angle:axis:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(${type} angle, simd_${type}3 axis) {
     ${type} half_angle = 0.5f * angle;
@@ -43,19 +43,19 @@ simd_quaternion(${type} angle, simd_${type}3 axis) {
     return simd_quaternion(simd_make_${type}4(imag, real));
 }
 
-__attribute__((swift_name("simd_${name}.init(_:)")))
+SWIFT_NAME("simd_${name}.init(_:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(simd_${type}4x4 transform);
 
-__attribute__((swift_name("simd_${name}.init(_:)")))
+SWIFT_NAME("simd_${name}.init(_:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(simd_${type}3x3 transform);
 
-__attribute__((swift_name("simd_${name}.init(from:to:)")))
+SWIFT_NAME("simd_${name}.init(from:to:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(simd_${type}3 from, simd_${type}3 to);
 
-__attribute__((swift_name("getter:simd_${name}.normalized(self:)")))
+SWIFT_NAME("getter:simd_${name}.normalized(self:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_normalize(simd_${name} q)
 {

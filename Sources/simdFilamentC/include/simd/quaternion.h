@@ -12,21 +12,21 @@ extern "C"
 {
 #endif
 
-__attribute__((swift_name("simd_quatf.init(ix:iy:iz:r:)")))
+SWIFT_NAME("simd_quatf.init(ix:iy:iz:r:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(float ix, float iy, float iz, float r)
 {
     return (simd_quatf) { .vector = { ix, iy, iz, r } };
 }
 
-__attribute__((swift_name("simd_quatf.init(_:)")))
+SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(const float *xyzr)
 {
     return (simd_quatf) { .vector = simd_make_float4(xyzr) };
 }
 
-__attribute__((swift_name("simd_quatf.init(_:)")))
+SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(simd_float4 xyzr)
 {
@@ -34,7 +34,7 @@ simd_quaternion(simd_float4 xyzr)
 }
 
 // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-__attribute__((swift_name("simd_quatf.init(angle:axis:)")))
+SWIFT_NAME("simd_quatf.init(angle:axis:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(float angle, simd_float3 axis) {
     float half_angle = 0.5f * angle;
@@ -45,19 +45,19 @@ simd_quaternion(float angle, simd_float3 axis) {
     return simd_quaternion(simd_make_float4(imag, real));
 }
 
-__attribute__((swift_name("simd_quatf.init(_:)")))
+SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(simd_float4x4 transform);
 
-__attribute__((swift_name("simd_quatf.init(_:)")))
+SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(simd_float3x3 transform);
 
-__attribute__((swift_name("simd_quatf.init(from:to:)")))
+SWIFT_NAME("simd_quatf.init(from:to:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(simd_float3 from, simd_float3 to);
 
-__attribute__((swift_name("getter:simd_quatf.normalized(self:)")))
+SWIFT_NAME("getter:simd_quatf.normalized(self:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_normalize(simd_quatf q)
 {
@@ -116,21 +116,21 @@ simd_mul(simd_quatf q, simd_quatf r)
                            _q.w * _r.w - _q.x * _r.x - _q.y * _r.y - _q.z * _r.z);
 }
 
-__attribute__((swift_name("simd_quatd.init(ix:iy:iz:r:)")))
+SWIFT_NAME("simd_quatd.init(ix:iy:iz:r:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(double ix, double iy, double iz, double r)
 {
     return (simd_quatd) { .vector = { ix, iy, iz, r } };
 }
 
-__attribute__((swift_name("simd_quatd.init(_:)")))
+SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(const double *xyzr)
 {
     return (simd_quatd) { .vector = simd_make_double4(xyzr) };
 }
 
-__attribute__((swift_name("simd_quatd.init(_:)")))
+SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(simd_double4 xyzr)
 {
@@ -138,7 +138,7 @@ simd_quaternion(simd_double4 xyzr)
 }
 
 // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-__attribute__((swift_name("simd_quatd.init(angle:axis:)")))
+SWIFT_NAME("simd_quatd.init(angle:axis:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(double angle, simd_double3 axis) {
     double half_angle = 0.5f * angle;
@@ -149,19 +149,19 @@ simd_quaternion(double angle, simd_double3 axis) {
     return simd_quaternion(simd_make_double4(imag, real));
 }
 
-__attribute__((swift_name("simd_quatd.init(_:)")))
+SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(simd_double4x4 transform);
 
-__attribute__((swift_name("simd_quatd.init(_:)")))
+SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(simd_double3x3 transform);
 
-__attribute__((swift_name("simd_quatd.init(from:to:)")))
+SWIFT_NAME("simd_quatd.init(from:to:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(simd_double3 from, simd_double3 to);
 
-__attribute__((swift_name("getter:simd_quatd.normalized(self:)")))
+SWIFT_NAME("getter:simd_quatd.normalized(self:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_normalize(simd_quatd q)
 {
