@@ -7,6 +7,8 @@
 #include "simd/vector_constructors.h"
 #include "simd/vector_geometry.h"
 
+#include <assert.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -56,7 +58,54 @@ simd_quaternion(simd_float3x3 transform);
 
 SWIFT_NAME("simd_quatf.init(from:to:)")
 simd_quatf SIMD_OVERLOADABLE
-simd_quaternion(simd_float3 from, simd_float3 to);
+simd_quaternion(simd_float3 from, simd_float3 to)
+{
+    // https://stackoverflow.com/a/11741520/260433
+    // The input vectors must have the same length for accurate computation
+    // of the halfway vector. This is not checked in release mode to match
+    // the behavior of Apple's SIMD (which never check).
+#ifndef NDEBUG
+    float length_squared_from = simd_length_squared(from);
+    float length_squared_to = simd_length_squared(to);
+    float relative_difference = 2.f * fabs(length_squared_from - length_squared_to) / (length_squared_from + length_squared_to);
+    assert(relative_difference < 0.01 && "Vectors must have the same length");
+#endif
+
+    simd_float3 half = simd_normalize(from + to);
+    
+    if (simd_length_squared(half) == 0.f) {
+        simd_float3 abs_from = simd_abs(from);
+        simd_float3 axis;
+
+        if (abs_from.x <= abs_from.y && abs_from.x <= abs_from.z) {
+            axis = simd_make_float3(1.f, 0.f, 0.f);
+        } else if (abs_from.y <= abs_from.z) {
+            axis = simd_make_float3(0.f, 1.f, 0.f);
+        } else {
+            axis = simd_make_float3(0.f, 0.f, 1.f);
+        }
+
+        return simd_quaternion(simd_make_float4(simd_normalize(simd_cross(abs_from, axis)),
+                                                  0.f));
+    }
+
+    return simd_quaternion(simd_make_float4(simd_cross(from, half),
+                                              simd_dot(from, half)));
+}
+
+SWIFT_NAME("getter:simd_quatf.real(self:)")
+float SIMD_OVERLOADABLE
+simd_real(simd_quatf q)
+{
+    return q.vector.w;
+}
+
+SWIFT_NAME("getter:simd_quatf.imag(self:)")
+simd_float3 SIMD_OVERLOADABLE
+simd_imag(simd_quatf q)
+{
+    return q.vector.xyz;
+}
 
 SWIFT_NAME("getter:simd_quatf.normalized(self:)")
 simd_quatf SIMD_OVERLOADABLE
@@ -65,6 +114,7 @@ simd_normalize(simd_quatf q)
     return simd_quaternion(simd_normalize(q.vector));
 }
 
+SWIFT_NAME("getter:simd_quatf.length(self:)")
 float SIMD_OVERLOADABLE
 simd_length(simd_quatf q)
 {
@@ -160,6 +210,16 @@ simd_div(simd_quatf q, simd_quatf r)
     return simd_mul(q, simd_inverse(r));
 }
 
+simd_float3 SIMD_OVERLOADABLE
+simd_act(simd_quatf q, simd_float3 v)
+{
+    // https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternion_as_rotations
+    simd_quatf v_quat = simd_quaternion(simd_make_float4(v));
+
+    return simd_imag(simd_mul(simd_mul(q, v_quat),
+                              simd_inverse(q)));
+}
+
 SWIFT_NAME("simd_quatd.init(ix:iy:iz:r:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(double ix, double iy, double iz, double r)
@@ -204,7 +264,54 @@ simd_quaternion(simd_double3x3 transform);
 
 SWIFT_NAME("simd_quatd.init(from:to:)")
 simd_quatd SIMD_OVERLOADABLE
-simd_quaternion(simd_double3 from, simd_double3 to);
+simd_quaternion(simd_double3 from, simd_double3 to)
+{
+    // https://stackoverflow.com/a/11741520/260433
+    // The input vectors must have the same length for accurate computation
+    // of the halfway vector. This is not checked in release mode to match
+    // the behavior of Apple's SIMD (which never check).
+#ifndef NDEBUG
+    double length_squared_from = simd_length_squared(from);
+    double length_squared_to = simd_length_squared(to);
+    double relative_difference = 2.f * fabs(length_squared_from - length_squared_to) / (length_squared_from + length_squared_to);
+    assert(relative_difference < 0.01 && "Vectors must have the same length");
+#endif
+
+    simd_double3 half = simd_normalize(from + to);
+    
+    if (simd_length_squared(half) == 0.f) {
+        simd_double3 abs_from = simd_abs(from);
+        simd_double3 axis;
+
+        if (abs_from.x <= abs_from.y && abs_from.x <= abs_from.z) {
+            axis = simd_make_double3(1.f, 0.f, 0.f);
+        } else if (abs_from.y <= abs_from.z) {
+            axis = simd_make_double3(0.f, 1.f, 0.f);
+        } else {
+            axis = simd_make_double3(0.f, 0.f, 1.f);
+        }
+
+        return simd_quaternion(simd_make_double4(simd_normalize(simd_cross(abs_from, axis)),
+                                                  0.f));
+    }
+
+    return simd_quaternion(simd_make_double4(simd_cross(from, half),
+                                              simd_dot(from, half)));
+}
+
+SWIFT_NAME("getter:simd_quatd.real(self:)")
+double SIMD_OVERLOADABLE
+simd_real(simd_quatd q)
+{
+    return q.vector.w;
+}
+
+SWIFT_NAME("getter:simd_quatd.imag(self:)")
+simd_double3 SIMD_OVERLOADABLE
+simd_imag(simd_quatd q)
+{
+    return q.vector.xyz;
+}
 
 SWIFT_NAME("getter:simd_quatd.normalized(self:)")
 simd_quatd SIMD_OVERLOADABLE
@@ -213,6 +320,7 @@ simd_normalize(simd_quatd q)
     return simd_quaternion(simd_normalize(q.vector));
 }
 
+SWIFT_NAME("getter:simd_quatd.length(self:)")
 double SIMD_OVERLOADABLE
 simd_length(simd_quatd q)
 {
@@ -306,6 +414,16 @@ simd_quatd SIMD_OVERLOADABLE
 simd_div(simd_quatd q, simd_quatd r)
 {
     return simd_mul(q, simd_inverse(r));
+}
+
+simd_double3 SIMD_OVERLOADABLE
+simd_act(simd_quatd q, simd_double3 v)
+{
+    // https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation#Using_quaternion_as_rotations
+    simd_quatd v_quat = simd_quaternion(simd_make_double4(v));
+
+    return simd_imag(simd_mul(simd_mul(q, v_quat),
+                              simd_inverse(q)));
 }
 
 

@@ -24,6 +24,7 @@ internal class simdFilamentTests: XCTestCase {
         ("testAlmostEqual", testAlmostEqual),
         ("testInverse", testInverse),
         ("testQuaternion", testQuaternion),
+        ("testQuaternionFromVectors", testQuaternionFromVectors),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -329,10 +330,10 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(simd_norm_inf(inverse.vector - expectedInverse.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
-        XCTAssertEqual(simd_length(inverse * q),
+        XCTAssertEqual((inverse * q).length,
                        1.0,
                        accuracy: simdFilamentTests.accuracy)
-        XCTAssertEqual(simd_length(q * inverse),
+        XCTAssertEqual((q * inverse).length,
                        1.0,
                        accuracy: simdFilamentTests.accuracy)
 
@@ -360,6 +361,17 @@ internal class simdFilamentTests: XCTestCase {
         let expectedProduct = simd_quatf(simd_float4(21, 57, 39, -3))
 
         XCTAssertEqual(simd_norm_inf(product.vector - expectedProduct.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+    }
+
+    internal func testQuaternionFromVectors() {
+        let from = simd_normalize(simd_float3(1.0, 2.0, 3.0))
+        let to = simd_normalize(simd_float3(-4.0, 5.0, -6.0))
+        let q = simd_quatf(from: from, to: to)
+        let transformed = q * from
+
+        XCTAssertEqual(simd_norm_inf(to - transformed),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
     }

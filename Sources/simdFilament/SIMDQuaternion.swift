@@ -13,6 +13,7 @@ public protocol SIMDQuaternion {
     static func + (lhs: Self, rhs: Self) -> Self
     static func - (lhs: Self, rhs: Self) -> Self
     static func * (lhs: Self, rhs: Self) -> Self
+    static func * (lhs: Self, rhs: SIMD3 <Scalar>) -> SIMD3 <Scalar>
     static func * (lhs: Self, rhs: Scalar) -> Self
     static func * (lhs: Scalar, rhs: Self) -> Self
     static func / (lhs: Self, rhs: Self) -> Self
@@ -24,11 +25,6 @@ public extension SIMDQuaternion {
     static func == (lhs: Self,
                     rhs: Self) -> Bool {
         return lhs.vector == rhs.vector
-    }
-
-    init(real: Scalar,
-         imag: SIMD3 <Scalar>) {
-        self = Self(Vector(imag, real))
     }
 
     static func + (lhs: Self,
@@ -60,9 +56,23 @@ public extension SIMDQuaternion {
                    rhs: Self) -> Self {
         return Self(lhs / rhs.vector)
     }
+
+    init(real: Scalar,
+         imag: SIMD3 <Scalar>) {
+        self = Self(Vector(imag, real))
+    }
+
+    func act(_ vector: SIMD3 <Scalar>) -> SIMD3 <Scalar> {
+        return self * vector
+    }
 }
 
 extension simd_quatf: SIMDQuaternion, Equatable {
+    public static func * (lhs: Self,
+                          rhs: SIMD3 <Scalar>) -> SIMD3 <Scalar> {
+        return simd_act(lhs, rhs)
+    }
+
     public static func * (lhs: Self,
                           rhs: Self) -> Self {
         return simd_mul(lhs, rhs)
@@ -75,6 +85,11 @@ extension simd_quatf: SIMDQuaternion, Equatable {
 }
 
 extension simd_quatd: SIMDQuaternion, Equatable {
+    public static func * (lhs: Self,
+                          rhs: SIMD3 <Scalar>) -> SIMD3 <Scalar> {
+        return simd_act(lhs, rhs)
+    }
+
     public static func * (lhs: Self,
                           rhs: Self) -> Self {
         return simd_mul(lhs, rhs)
@@ -94,22 +109,6 @@ public extension simd_quatf {
     init(_ rotationMatrix: simd_float4x4) {
         preconditionFailure()
     }
-
-    init(from: SIMD3 <Float>,
-         to: SIMD3 <Float>) {
-        preconditionFailure()
-    }
-}
-
-extension simd_quatf {
-    public func act(_ vector: SIMD3 <Float>) -> SIMD3 <Float> {
-        preconditionFailure()
-    }
-}
-
-public func simd_quaternion(_ from: simd_float3,
-                            _ to: simd_float3) -> simd_quatf {
-    preconditionFailure()
 }
 
 public func simd_slerp(_ q0: simd_quatf,
