@@ -1,0 +1,120 @@
+#pragma once
+
+#include "simd/types.h"
+
+#pragma mark Float
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+%{
+types = ('float', 'double', 'int', 'uint', 'ushort')
+var_names = ('x', 'y', 'z', 'w')
+
+
+def get_base_type(type):
+    if type[0] == 'u':
+        return 'unsigned {}'.format(type[1:])
+    return type
+
+
+def single_arg_and_init_for_size(type, size, offset):
+    assert size > 0
+
+    base_type = get_base_type(type)
+    name = ''.join(var_names[offset:offset+size])
+
+    if size == 1:
+        args = '{} {}'.format(base_type, name)
+        init = name
+    else:
+        args = 'simd_{}{} {}'.format(type, size, name)
+        init_items = []
+        for i in range(size):
+           init_items.append('{}.{}'.format(name, var_names[i]))
+        init = ', '.join(init_items)
+    return (args, init)
+
+
+def merge_args_and_inits(*args_and_inits):
+    args = [ item[0] for item in args_and_inits ]
+    inits = [ item[1] for item in args_and_inits ]
+    merged_args = ', '.join(args)
+    merged_inits = ', '.join(inits)
+    return (merged_args, merged_inits)
+
+
+def all_args_and_init_for_size(type, size, offset = 0):
+    all_args_and_init = []
+    max_first_size = size if offset != 0 else size - 1
+
+    for first_size in range(1, max_first_size + 1):
+        first_args_and_init = single_arg_and_init_for_size(type, first_size, offset)
+
+        all_args_and_init.append(first_args_and_init)
+
+        for other_args_and_init in all_args_and_init_for_size(type, size - first_size, offset + first_size):
+            all_args_and_init.append(merge_args_and_inits(first_args_and_init, other_args_and_init))
+
+    return all_args_and_init
+
+}%
+
+// Cast constructors
+
+% for dims in range(2, 5):
+%     for type in types:
+%         for type2 in types:
+simd_${type}${dims} SIMD_OVERLOADABLE
+simd_make_${type}${dims}(simd_${type2}${dims} from)
+{
+%             if type == type2:
+    return from;
+%             end
+    return __builtin_convertvector(from, simd_${type}${dims});
+}
+%         end
+%     end
+% end
+
+// From arrays
+
+% for type in types:
+%     base_type = get_base_type(type)
+%     for dims in range(2, 5):
+simd_${type}${dims} SIMD_OVERLOADABLE
+simd_make_${type}${dims}(${base_type} const *array)
+{
+    simd_${type}${dims} result;
+
+%         for i, name in enumerate(var_names[:dims]):
+    result.${name} = array[${i}];
+%         end
+    return result;
+}
+%     end
+% end
+
+// Multiple parameters constructors
+
+% for type in types:
+%     for dims in range(2, 5):
+%         for args, init in all_args_and_init_for_size(type, dims):
+%
+simd_${type}${dims} SIMD_OVERLOADABLE
+simd_make_${type}${dims}(${args})
+{
+    simd_${type}${dims} result = { ${init} };
+
+    return result;
+}
+
+%         end
+%     end
+% end
+
+#ifdef __cplusplus
+}
+#endif

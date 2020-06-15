@@ -1,7 +1,7 @@
 #pragma once
 
 #include "simd/types.h"
-#include "simd/vector_casts.h"
+#include "simd/vector_constructors.h"
 
 #define DEFINE_CAST(from, to, to_column_type, num_columns, swift_args) \
     SWIFT_NAME("simd_" #to ".init(_:)") \
