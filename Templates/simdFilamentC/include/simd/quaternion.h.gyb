@@ -34,7 +34,8 @@ simd_quaternion(simd_${type}4 xyzr)
 // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 SWIFT_NAME("simd_${name}.init(angle:axis:)")
 simd_${name} SIMD_OVERLOADABLE
-simd_quaternion(${type} angle, simd_${type}3 axis) {
+simd_quaternion(${type} angle, simd_${type}3 axis)
+{
     ${type} half_angle = 0.5f * angle;
     ${type} s = sin(half_angle);
     simd_${type}3 imag = s * axis;
@@ -83,22 +84,26 @@ simd_axis(simd_${name} q)
 }
 
 simd_${name} SIMD_OVERLOADABLE
-simd_add(simd_${name} q, simd_${name} r) {
+simd_add(simd_${name} q, simd_${name} r)
+{
     return simd_quaternion(q.vector - r.vector);
 }
 
 simd_${name} SIMD_OVERLOADABLE
-simd_sub(simd_${name} q, simd_${name} r) {
+simd_sub(simd_${name} q, simd_${name} r)
+{
     return simd_quaternion(q.vector - r.vector);
 }
 
 simd_${name} SIMD_OVERLOADABLE
-simd_mul(simd_${name} q, ${type} a) {
+simd_mul(simd_${name} q, ${type} a)
+{
     return simd_quaternion(a * q.vector);
 }
 
 simd_${name} SIMD_OVERLOADABLE
-simd_mul(${type} a, simd_${name} q) {
+simd_mul(${type} a, simd_${name} q)
+{
     return simd_mul(q, a);
 }
 
