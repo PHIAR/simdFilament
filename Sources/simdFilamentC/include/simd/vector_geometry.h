@@ -89,22 +89,36 @@ extern "C"
     ALL_BINARY_OPS(simd_project, float, _y * simd_dot(_x, _y) / simd_length_squared(_y))
     ALL_BINARY_OPS(simd_project, double, _y * simd_dot(_x, _y) / simd_length_squared(_y))
 
-    simd_float3 SIMD_ATTRIBUTES
-    simd_cross2(simd_float2 a, simd_float2 b);
-
-    simd_float3 SIMD_ATTRIBUTES
-    simd_cross3(simd_float3 a, simd_float3 b);
-
     simd_float3 SIMD_OVERLOADABLE
     simd_cross(simd_float2 a, simd_float2 b)
     {
-        return simd_cross2(a, b);
+        float cross = a.x * b.y - a.y * b.x;
+
+        return simd_make_float3(0.0, 0.0, cross);
     }
 
     simd_float3 SIMD_OVERLOADABLE
     simd_cross(simd_float3 a, simd_float3 b)
     {
-        return simd_cross3(a, b);
+        return simd_make_float3(a.y * b.z - a.z * b.y,
+                                a.z * b.x - a.x * b.z,
+                                a.x * b.y - a.y * b.x);
+    }
+
+    simd_double3 SIMD_OVERLOADABLE
+    simd_cross(simd_double2 a, simd_double2 b)
+    {
+        double cross = a.x * b.y - a.y * b.x;
+
+        return simd_make_double3(0.0, 0.0, cross);
+    }
+
+    simd_double3 SIMD_OVERLOADABLE
+    simd_cross(simd_double3 a, simd_double3 b)
+    {
+        return simd_make_double3(a.y * b.z - a.z * b.y,
+                                a.z * b.x - a.x * b.z,
+                                a.x * b.y - a.y * b.x);
     }
 
 #ifdef __cplusplus
