@@ -36,7 +36,8 @@ simd_quaternion(simd_float4 xyzr)
 // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 SWIFT_NAME("simd_quatf.init(angle:axis:)")
 simd_quatf SIMD_OVERLOADABLE
-simd_quaternion(float angle, simd_float3 axis) {
+simd_quaternion(float angle, simd_float3 axis)
+{
     float half_angle = 0.5f * angle;
     float s = sin(half_angle);
     simd_float3 imag = s * axis;
@@ -70,6 +71,12 @@ simd_length(simd_quatf q)
     return simd_length(q.vector);
 }
 
+float SIMD_OVERLOADABLE
+simd_length_squared(simd_quatf q)
+{
+    return simd_length_squared(q.vector);
+}
+
 SWIFT_NAME("getter:simd_quatf.angle(self:)")
 float SIMD_OVERLOADABLE
 simd_angle(simd_quatf q)
@@ -85,22 +92,26 @@ simd_axis(simd_quatf q)
 }
 
 simd_quatf SIMD_OVERLOADABLE
-simd_add(simd_quatf q, simd_quatf r) {
+simd_add(simd_quatf q, simd_quatf r)
+{
     return simd_quaternion(q.vector - r.vector);
 }
 
 simd_quatf SIMD_OVERLOADABLE
-simd_sub(simd_quatf q, simd_quatf r) {
+simd_sub(simd_quatf q, simd_quatf r)
+{
     return simd_quaternion(q.vector - r.vector);
 }
 
 simd_quatf SIMD_OVERLOADABLE
-simd_mul(simd_quatf q, float a) {
+simd_mul(simd_quatf q, float a)
+{
     return simd_quaternion(a * q.vector);
 }
 
 simd_quatf SIMD_OVERLOADABLE
-simd_mul(float a, simd_quatf q) {
+simd_mul(float a, simd_quatf q)
+{
     return simd_mul(q, a);
 }
 
@@ -114,6 +125,33 @@ simd_mul(simd_quatf q, simd_quatf r)
                            _q.w * _r.y - _q.x * _r.z + _q.y * _r.w + _q.z * _r.x,
                            _q.w * _r.z + _q.x * _r.y - _q.y * _r.x + _q.z * _r.w,
                            _q.w * _r.w - _q.x * _r.x - _q.y * _r.y - _q.z * _r.z);
+}
+
+simd_quatf SIMD_OVERLOADABLE
+simd_div(simd_quatf q, float a)
+{
+    return simd_quaternion(q.vector / a);
+}
+
+simd_quatf SIMD_OVERLOADABLE
+simd_div(float a, simd_quatf q)
+{
+    return simd_quaternion(a / q.vector);
+}
+
+SWIFT_NAME("getter:simd_quatf.conjugate(self:)")
+simd_quatf SIMD_OVERLOADABLE
+simd_conjugate(simd_quatf q)
+{
+    q.vector.xyz *= -1.f;
+    return q;
+}
+
+SWIFT_NAME("getter:simd_quatf.inverse(self:)")
+simd_quatf SIMD_OVERLOADABLE
+simd_inverse(simd_quatf q)
+{
+    return simd_div(simd_conjugate(q), simd_length_squared(q));
 }
 
 SWIFT_NAME("simd_quatd.init(ix:iy:iz:r:)")
@@ -140,7 +178,8 @@ simd_quaternion(simd_double4 xyzr)
 // https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 SWIFT_NAME("simd_quatd.init(angle:axis:)")
 simd_quatd SIMD_OVERLOADABLE
-simd_quaternion(double angle, simd_double3 axis) {
+simd_quaternion(double angle, simd_double3 axis)
+{
     double half_angle = 0.5f * angle;
     double s = sin(half_angle);
     simd_double3 imag = s * axis;
@@ -174,6 +213,12 @@ simd_length(simd_quatd q)
     return simd_length(q.vector);
 }
 
+double SIMD_OVERLOADABLE
+simd_length_squared(simd_quatd q)
+{
+    return simd_length_squared(q.vector);
+}
+
 SWIFT_NAME("getter:simd_quatd.angle(self:)")
 double SIMD_OVERLOADABLE
 simd_angle(simd_quatd q)
@@ -189,22 +234,26 @@ simd_axis(simd_quatd q)
 }
 
 simd_quatd SIMD_OVERLOADABLE
-simd_add(simd_quatd q, simd_quatd r) {
+simd_add(simd_quatd q, simd_quatd r)
+{
     return simd_quaternion(q.vector - r.vector);
 }
 
 simd_quatd SIMD_OVERLOADABLE
-simd_sub(simd_quatd q, simd_quatd r) {
+simd_sub(simd_quatd q, simd_quatd r)
+{
     return simd_quaternion(q.vector - r.vector);
 }
 
 simd_quatd SIMD_OVERLOADABLE
-simd_mul(simd_quatd q, double a) {
+simd_mul(simd_quatd q, double a)
+{
     return simd_quaternion(a * q.vector);
 }
 
 simd_quatd SIMD_OVERLOADABLE
-simd_mul(double a, simd_quatd q) {
+simd_mul(double a, simd_quatd q)
+{
     return simd_mul(q, a);
 }
 
@@ -218,6 +267,33 @@ simd_mul(simd_quatd q, simd_quatd r)
                            _q.w * _r.y - _q.x * _r.z + _q.y * _r.w + _q.z * _r.x,
                            _q.w * _r.z + _q.x * _r.y - _q.y * _r.x + _q.z * _r.w,
                            _q.w * _r.w - _q.x * _r.x - _q.y * _r.y - _q.z * _r.z);
+}
+
+simd_quatd SIMD_OVERLOADABLE
+simd_div(simd_quatd q, double a)
+{
+    return simd_quaternion(q.vector / a);
+}
+
+simd_quatd SIMD_OVERLOADABLE
+simd_div(double a, simd_quatd q)
+{
+    return simd_quaternion(a / q.vector);
+}
+
+SWIFT_NAME("getter:simd_quatd.conjugate(self:)")
+simd_quatd SIMD_OVERLOADABLE
+simd_conjugate(simd_quatd q)
+{
+    q.vector.xyz *= -1.f;
+    return q;
+}
+
+SWIFT_NAME("getter:simd_quatd.inverse(self:)")
+simd_quatd SIMD_OVERLOADABLE
+simd_inverse(simd_quatd q)
+{
+    return simd_div(simd_conjugate(q), simd_length_squared(q));
 }
 
 

@@ -313,13 +313,27 @@ internal class simdFilamentTests: XCTestCase {
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
 
-        let r = simd_quatf(simd_float4(6.0, 7.0, 5.0, 8.0))
-        let product = q * r
-        // https://www.wolframalpha.com/input/?i=%284+%2B+i+%2B+2j+%2B+3k%29+*+%284+%2B+2i+%2B+3j+%2B+k%29
-        let expectedProduct = simd_quatf(simd_float4(21, 57, 39, -3))
+        let conjugate = q.conjugate
+        let expectedConjugate = simd_quatf(ix: -1.0, iy: -2.0, iz: -3.0, r: 4.0)
 
-        XCTAssertEqual(simd_norm_inf(product.vector - expectedProduct.vector),
+        XCTAssertEqual(simd_norm_inf(conjugate.vector - expectedConjugate.vector),
                        0.0,
+                       accuracy: simdFilamentTests.accuracy)
+
+        let inverse = q.inverse
+        let expectedInverse = simd_quatf(ix: -0.0333333,
+                                         iy: -0.0666667,
+                                         iz: -0.1,
+                                         r: 0.133333)
+
+        XCTAssertEqual(simd_norm_inf(inverse.vector - expectedInverse.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+        XCTAssertEqual(simd_length(inverse * q),
+                       1.0,
+                       accuracy: simdFilamentTests.accuracy)
+        XCTAssertEqual(simd_length(q * inverse),
+                       1.0,
                        accuracy: simdFilamentTests.accuracy)
 
         let angle = normalized.angle
@@ -337,6 +351,15 @@ internal class simdFilamentTests: XCTestCase {
         let reconstructed = simd_quatf(angle: angle, axis: axis)
 
         XCTAssertEqual(simd_norm_inf(reconstructed.vector - normalized.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+
+        let r = simd_quatf(simd_float4(6.0, 7.0, 5.0, 8.0))
+        let product = q * r
+        // https://www.wolframalpha.com/input/?i=%284+%2B+i+%2B+2j+%2B+3k%29+*+%284+%2B+2i+%2B+3j+%2B+k%29
+        let expectedProduct = simd_quatf(simd_float4(21, 57, 39, -3))
+
+        XCTAssertEqual(simd_norm_inf(product.vector - expectedProduct.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
     }

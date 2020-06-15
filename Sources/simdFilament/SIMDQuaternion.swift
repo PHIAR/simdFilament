@@ -91,10 +91,6 @@ extension simd_quatf {
 }
 
 extension simd_quatf {
-    public var inverse: simd_quatf {
-        preconditionFailure()
-    }
-
     public func act(_ vector: SIMD3 <Float>) -> SIMD3 <Float> {
         preconditionFailure()
     }
