@@ -15,6 +15,9 @@ public protocol SIMDQuaternion {
     static func * (lhs: Self, rhs: Self) -> Self
     static func * (lhs: Self, rhs: Scalar) -> Self
     static func * (lhs: Scalar, rhs: Self) -> Self
+    static func / (lhs: Self, rhs: Self) -> Self
+    static func / (lhs: Self, rhs: Scalar) -> Self
+    static func / (lhs: Scalar, rhs: Self) -> Self
 }
 
 public extension SIMDQuaternion {
@@ -47,6 +50,16 @@ public extension SIMDQuaternion {
                    rhs: Self) -> Self {
         return rhs * lhs
     }
+
+    static func / (lhs: Self,
+                   rhs: Scalar) -> Self {
+        return Self(lhs.vector / rhs)
+    }
+
+    static func / (lhs: Scalar,
+                   rhs: Self) -> Self {
+        return Self(lhs / rhs.vector)
+    }
 }
 
 extension simd_quatf: SIMDQuaternion, Equatable {
@@ -54,12 +67,22 @@ extension simd_quatf: SIMDQuaternion, Equatable {
                           rhs: Self) -> Self {
         return simd_mul(lhs, rhs)
     }
+
+    public static func / (lhs: Self,
+                          rhs: Self) -> Self {
+        return simd_div(lhs, rhs)
+    }
 }
 
 extension simd_quatd: SIMDQuaternion, Equatable {
     public static func * (lhs: Self,
                           rhs: Self) -> Self {
         return simd_mul(lhs, rhs)
+    }
+
+    public static func / (lhs: Self,
+                          rhs: Self) -> Self {
+        return simd_div(lhs, rhs)
     }
 }
 
@@ -79,40 +102,8 @@ public extension simd_quatf {
 }
 
 extension simd_quatf {
-    public static func / (lhs: simd_quatf,
-                          rhs: simd_quatf) -> simd_quatf {
-        preconditionFailure()
-    }
-
-    public static func / (lhs: simd_quatf,
-                          rhs: Float) -> simd_quatf {
-        preconditionFailure()
-    }
-}
-
-extension simd_quatf {
     public func act(_ vector: SIMD3 <Float>) -> SIMD3 <Float> {
         preconditionFailure()
-    }
-}
-
-extension simd_quatf: RangeReplaceableCollection {
-    public typealias Element = Float
-    public typealias Index = Int
-
-    public var startIndex: Int { 0 }
-    public var endIndex: Int { 4 }
-
-    public subscript(bounds: Self.Index) -> Self.Element {
-        preconditionFailure()
-    }
-
-    public func append <S: Sequence> (contentsOf newElements: S) where Element == S.Element {
-        preconditionFailure()
-    }
-
-    public func index(after i: Int) -> Int {
-        return i + 1
     }
 }
 

@@ -154,6 +154,12 @@ simd_inverse(simd_quatf q)
     return simd_div(simd_conjugate(q), simd_length_squared(q));
 }
 
+simd_quatf SIMD_OVERLOADABLE
+simd_div(simd_quatf q, simd_quatf r)
+{
+    return simd_mul(q, simd_inverse(r));
+}
+
 SWIFT_NAME("simd_quatd.init(ix:iy:iz:r:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(double ix, double iy, double iz, double r)
@@ -294,6 +300,12 @@ simd_quatd SIMD_OVERLOADABLE
 simd_inverse(simd_quatd q)
 {
     return simd_div(simd_conjugate(q), simd_length_squared(q));
+}
+
+simd_quatd SIMD_OVERLOADABLE
+simd_div(simd_quatd q, simd_quatd r)
+{
+    return simd_mul(q, simd_inverse(r));
 }
 
 
