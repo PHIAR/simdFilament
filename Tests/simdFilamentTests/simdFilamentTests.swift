@@ -24,7 +24,9 @@ internal class simdFilamentTests: XCTestCase {
         ("testAlmostEqual", testAlmostEqual),
         ("testInverse", testInverse),
         ("testQuaternion", testQuaternion),
+        ("testQuaternionFromMatrix", testQuaternionFromVectors),
         ("testQuaternionFromVectors", testQuaternionFromVectors),
+        ("testQuaternionPairwise", testQuaternionPairwise),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -354,8 +356,39 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(simd_norm_inf(reconstructed.vector - normalized.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
+    }
 
-        let r = simd_quatf(simd_float4(6.0, 7.0, 5.0, 8.0))
+    internal func testQuaternionFromMatrix() {
+        let matrix = simd_float3x3(
+            simd_float3(0.133333, 0.933333, -0.333333),
+            simd_float3(-0.666667, 0.333333, 0.666667),
+            simd_float3(0.733333, 0.133333, 0.666667)
+        )
+        let q = simd_quatf(matrix)
+        let expectedQ = simd_quatf(ix: 1.825742e-01,
+                                   iy: 3.651483e-01,
+                                   iz: 5.477225e-01,
+                                   r: 7.302967e-01)
+
+        XCTAssertEqual(simd_norm_inf(q.vector - expectedQ.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+    }
+
+    internal func testQuaternionFromVectors() {
+        let from = simd_normalize(simd_float3(1.0, 2.0, 3.0))
+        let to = simd_normalize(simd_float3(-4.0, 5.0, -6.0))
+        let q = simd_quatf(from: from, to: to)
+        let transformed = q * from
+
+        XCTAssertEqual(simd_norm_inf(to - transformed),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+    }
+
+    internal func testQuaternionPairwise() {
+        let q = simd_quatf(ix: 1.0, iy: 2.0, iz: 3.0, r: 4.0)
+        let r = simd_quatf(ix: 6.0, iy: 7.0, iz: 5.0, r: 8.0)
         let product = q * r
         // https://www.wolframalpha.com/input/?i=%284+%2B+i+%2B+2j+%2B+3k%29+*+%284+%2B+2i+%2B+3j+%2B+k%29
         let expectedProduct = simd_quatf(simd_float4(21, 57, 39, -3))
@@ -371,17 +404,6 @@ internal class simdFilamentTests: XCTestCase {
         let expectedSlerp = scaledDelta * q.normalized
 
         XCTAssertEqual(simd_norm_inf(slerp.vector - expectedSlerp.vector),
-                       0.0,
-                       accuracy: simdFilamentTests.accuracy)
-    }
-
-    internal func testQuaternionFromVectors() {
-        let from = simd_normalize(simd_float3(1.0, 2.0, 3.0))
-        let to = simd_normalize(simd_float3(-4.0, 5.0, -6.0))
-        let q = simd_quatf(from: from, to: to)
-        let transformed = q * from
-
-        XCTAssertEqual(simd_norm_inf(to - transformed),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
     }

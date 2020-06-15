@@ -100,13 +100,3 @@ extension simd_quatd: SIMDQuaternion, Equatable {
         return simd_div(lhs, rhs)
     }
 }
-
-public extension simd_quatf {
-    init(_ rotationMatrix: simd_float3x3) {
-        preconditionFailure()
-    }
-
-    init(_ rotationMatrix: simd_float4x4) {
-        preconditionFailure()
-    }
-}

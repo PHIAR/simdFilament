@@ -50,11 +50,35 @@ simd_quaternion(float angle, simd_float3 axis)
 
 SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
-simd_quaternion(simd_float4x4 transform);
+simd_quaternion(simd_float3x3 transform) {
+    // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+
+    simd_float4 diag = simd_make_float4(
+        transform.columns[0][0],
+        transform.columns[1][1],
+        transform.columns[2][2]
+    );
+
+    simd_float4 vector = 0.5f * simd_make_float4(
+        sqrt(fmax(0.0f, 1.0f + diag[0] - diag[1] - diag[2])),
+        sqrt(fmax(0.0f, 1.0f - diag[0] + diag[1] - diag[2])),
+        sqrt(fmax(0.0f, 1.0f - diag[0] - diag[1] + diag[2])),
+        sqrt(fmax(0.0f, 1.0f + diag[0] + diag[1] + diag[2]))
+    );
+
+    vector.x = copysign(vector.x, transform.columns[1][2] - transform.columns[2][1]);
+    vector.y = copysign(vector.y, transform.columns[2][0] - transform.columns[0][2]);
+    vector.z = copysign(vector.z, transform.columns[0][1] - transform.columns[1][0]);
+
+    return simd_quaternion(vector);
+}
 
 SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
-simd_quaternion(simd_float3x3 transform);
+simd_quaternion(simd_float4x4 transform)
+{
+    return simd_quaternion(*(simd_float3x3*) &transform);
+}
 
 SWIFT_NAME("simd_quatf.init(from:to:)")
 simd_quatf SIMD_OVERLOADABLE
@@ -285,11 +309,35 @@ simd_quaternion(double angle, simd_double3 axis)
 
 SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
-simd_quaternion(simd_double4x4 transform);
+simd_quaternion(simd_double3x3 transform) {
+    // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+
+    simd_double4 diag = simd_make_double4(
+        transform.columns[0][0],
+        transform.columns[1][1],
+        transform.columns[2][2]
+    );
+
+    simd_double4 vector = 0.5f * simd_make_double4(
+        sqrt(fmax(0.0f, 1.0f + diag[0] - diag[1] - diag[2])),
+        sqrt(fmax(0.0f, 1.0f - diag[0] + diag[1] - diag[2])),
+        sqrt(fmax(0.0f, 1.0f - diag[0] - diag[1] + diag[2])),
+        sqrt(fmax(0.0f, 1.0f + diag[0] + diag[1] + diag[2]))
+    );
+
+    vector.x = copysign(vector.x, transform.columns[1][2] - transform.columns[2][1]);
+    vector.y = copysign(vector.y, transform.columns[2][0] - transform.columns[0][2]);
+    vector.z = copysign(vector.z, transform.columns[0][1] - transform.columns[1][0]);
+
+    return simd_quaternion(vector);
+}
 
 SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
-simd_quaternion(simd_double3x3 transform);
+simd_quaternion(simd_double4x4 transform)
+{
+    return simd_quaternion(*(simd_double3x3*) &transform);
+}
 
 SWIFT_NAME("simd_quatd.init(from:to:)")
 simd_quatd SIMD_OVERLOADABLE
