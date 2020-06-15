@@ -220,6 +220,35 @@ simd_act(simd_quatf q, simd_float3 v)
                               simd_inverse(q)));
 }
 
+simd_quatf SIMD_OVERLOADABLE
+simd_slerp(simd_quatf q, simd_quatf r, float t)
+{
+    static const float eps = 0.001;
+
+    // https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/index.htm
+    float cosHalfAngle = simd_dot(q.vector, r.vector);
+
+    if (cosHalfAngle < 0.f) {
+        cosHalfAngle = -cosHalfAngle;
+        r = simd_quaternion(-r.vector);
+    }
+
+    if (cosHalfAngle >= 1.0f) {
+        return q;
+    }
+
+    float halfAngle = acos(cosHalfAngle);
+    float sinHalfAngle = sqrt(1.0f - cosHalfAngle * cosHalfAngle);
+
+    if (fabs(sinHalfAngle) < eps) {
+        return simd_quaternion(simd_mix(q.vector, r.vector, simd_make_float4(t, t, t, t)));
+    }
+
+    float wq = sin((1.f - t) * halfAngle) / sinHalfAngle;
+    float wr = sin(t * halfAngle) / sinHalfAngle;
+
+    return simd_quaternion(wq * q.vector + wr * r.vector);
+}
 SWIFT_NAME("simd_quatd.init(ix:iy:iz:r:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(double ix, double iy, double iz, double r)
@@ -426,6 +455,35 @@ simd_act(simd_quatd q, simd_double3 v)
                               simd_inverse(q)));
 }
 
+simd_quatd SIMD_OVERLOADABLE
+simd_slerp(simd_quatd q, simd_quatd r, double t)
+{
+    static const double eps = 0.001;
+
+    // https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/index.htm
+    double cosHalfAngle = simd_dot(q.vector, r.vector);
+
+    if (cosHalfAngle < 0.f) {
+        cosHalfAngle = -cosHalfAngle;
+        r = simd_quaternion(-r.vector);
+    }
+
+    if (cosHalfAngle >= 1.0f) {
+        return q;
+    }
+
+    double halfAngle = acos(cosHalfAngle);
+    double sinHalfAngle = sqrt(1.0f - cosHalfAngle * cosHalfAngle);
+
+    if (fabs(sinHalfAngle) < eps) {
+        return simd_quaternion(simd_mix(q.vector, r.vector, simd_make_double4(t, t, t, t)));
+    }
+
+    double wq = sin((1.f - t) * halfAngle) / sinHalfAngle;
+    double wr = sin(t * halfAngle) / sinHalfAngle;
+
+    return simd_quaternion(wq * q.vector + wr * r.vector);
+}
 
 #ifdef __cplusplus
 } // extern "C"

@@ -363,6 +363,16 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(simd_norm_inf(product.vector - expectedProduct.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
+
+        let t = Float(0.2)
+        let slerp = simd_slerp(q.normalized, r.normalized, t)
+        let delta = (r.normalized / q.normalized)
+        let scaledDelta = simd_quatf(angle: t * delta.angle, axis: delta.axis)
+        let expectedSlerp = scaledDelta * q.normalized
+
+        XCTAssertEqual(simd_norm_inf(slerp.vector - expectedSlerp.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
     }
 
     internal func testQuaternionFromVectors() {

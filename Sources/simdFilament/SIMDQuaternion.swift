@@ -110,9 +110,3 @@ public extension simd_quatf {
         preconditionFailure()
     }
 }
-
-public func simd_slerp(_ q0: simd_quatf,
-                       _ q1: simd_quatf,
-                       _ t: Float) -> simd_quatf {
-    preconditionFailure()
-}

@@ -218,6 +218,35 @@ simd_act(simd_${name} q, simd_${type}3 v)
                               simd_inverse(q)));
 }
 
+simd_${name} SIMD_OVERLOADABLE
+simd_slerp(simd_${name} q, simd_${name} r, ${type} t)
+{
+    static const ${type} eps = 0.001;
+
+    // https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/index.htm
+    ${type} cosHalfAngle = simd_dot(q.vector, r.vector);
+
+    if (cosHalfAngle < 0.f) {
+        cosHalfAngle = -cosHalfAngle;
+        r = simd_quaternion(-r.vector);
+    }
+
+    if (cosHalfAngle >= 1.0f) {
+        return q;
+    }
+
+    ${type} halfAngle = acos(cosHalfAngle);
+    ${type} sinHalfAngle = sqrt(1.0f - cosHalfAngle * cosHalfAngle);
+
+    if (fabs(sinHalfAngle) < eps) {
+        return simd_quaternion(simd_mix(q.vector, r.vector, simd_make_${type}4(t, t, t, t)));
+    }
+
+    ${type} wq = sin((1.f - t) * halfAngle) / sinHalfAngle;
+    ${type} wr = sin(t * halfAngle) / sinHalfAngle;
+
+    return simd_quaternion(wq * q.vector + wr * r.vector);
+}
 % end
 
 #ifdef __cplusplus
