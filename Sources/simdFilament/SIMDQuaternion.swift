@@ -63,24 +63,12 @@ extension simd_quatd: SIMDQuaternion, Equatable {
     }
 }
 
-public extension simd_quatd {
-    init(angle: Double,
-         axis: simd_double3) {
-        preconditionFailure()
-    }
-}
-
 public extension simd_quatf {
     init(_ rotationMatrix: simd_float3x3) {
         preconditionFailure()
     }
 
     init(_ rotationMatrix: simd_float4x4) {
-        preconditionFailure()
-    }
-
-    init(angle: Float,
-         axis: simd_float3) {
         preconditionFailure()
     }
 
@@ -103,14 +91,6 @@ extension simd_quatf {
 }
 
 extension simd_quatf {
-    public var angle: Float {
-        return simd_angle(self)
-    }
-
-    public var axis: SIMD3 <Float> {
-        preconditionFailure()
-    }
-
     public var inverse: simd_quatf {
         preconditionFailure()
     }
@@ -138,10 +118,6 @@ extension simd_quatf: RangeReplaceableCollection {
     public func index(after i: Int) -> Int {
         return i + 1
     }
-}
-
-public func simd_angle(_ q: simd_quatf) -> Float {
-    preconditionFailure()
 }
 
 public func simd_quaternion(_ from: simd_float3,

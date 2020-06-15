@@ -33,9 +33,17 @@ simd_quaternion(simd_float4 xyzr)
     return (simd_quatf) { .vector = xyzr };
 }
 
+// https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 __attribute__((swift_name("simd_quatf.init(angle:axis:)")))
 simd_quatf SIMD_OVERLOADABLE
-simd_quaternion(float angle, simd_float3 axis);
+simd_quaternion(float angle, simd_float3 axis) {
+    float half_angle = 0.5f * angle;
+    float s = sin(half_angle);
+    simd_float3 imag = s * axis;
+    float real = cos(half_angle);
+
+    return simd_quaternion(simd_make_float4(imag, real));
+}
 
 __attribute__((swift_name("simd_quatf.init(_:)")))
 simd_quatf SIMD_OVERLOADABLE
@@ -60,6 +68,20 @@ float SIMD_OVERLOADABLE
 simd_length(simd_quatf q)
 {
     return simd_length(q.vector);
+}
+
+SWIFT_NAME("getter:simd_quatf.angle(self:)")
+float SIMD_OVERLOADABLE
+simd_angle(simd_quatf q)
+{
+    return 2.f * acos(q.vector.w);
+}
+
+SWIFT_NAME("getter:simd_quatf.axis(self:)")
+simd_float3 SIMD_OVERLOADABLE
+simd_axis(simd_quatf q)
+{
+    return simd_normalize(q.vector.xyz);
 }
 
 simd_quatf SIMD_OVERLOADABLE
@@ -115,9 +137,17 @@ simd_quaternion(simd_double4 xyzr)
     return (simd_quatd) { .vector = xyzr };
 }
 
+// https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 __attribute__((swift_name("simd_quatd.init(angle:axis:)")))
 simd_quatd SIMD_OVERLOADABLE
-simd_quaternion(double angle, simd_double3 axis);
+simd_quaternion(double angle, simd_double3 axis) {
+    double half_angle = 0.5f * angle;
+    double s = sin(half_angle);
+    simd_double3 imag = s * axis;
+    double real = cos(half_angle);
+
+    return simd_quaternion(simd_make_double4(imag, real));
+}
 
 __attribute__((swift_name("simd_quatd.init(_:)")))
 simd_quatd SIMD_OVERLOADABLE
@@ -142,6 +172,20 @@ double SIMD_OVERLOADABLE
 simd_length(simd_quatd q)
 {
     return simd_length(q.vector);
+}
+
+SWIFT_NAME("getter:simd_quatd.angle(self:)")
+double SIMD_OVERLOADABLE
+simd_angle(simd_quatd q)
+{
+    return 2.f * acos(q.vector.w);
+}
+
+SWIFT_NAME("getter:simd_quatd.axis(self:)")
+simd_double3 SIMD_OVERLOADABLE
+simd_axis(simd_quatd q)
+{
+    return simd_normalize(q.vector.xyz);
 }
 
 simd_quatd SIMD_OVERLOADABLE

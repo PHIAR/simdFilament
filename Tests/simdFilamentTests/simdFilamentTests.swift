@@ -304,12 +304,12 @@ internal class simdFilamentTests: XCTestCase {
     internal func testQuaternion() {
         let q = simd_quatf(ix: 1.0, iy: 2.0, iz: 3.0, r: 4.0)
         let normalized = q.normalized
-        let expected = simd_quatf(ix: 1.825742e-01,
-                                  iy: 3.651483e-01,
-                                  iz: 5.477225e-01,
-                                  r: 7.302967e-01)
+        let expectedNormalized = simd_quatf(ix: 1.825742e-01,
+                                            iy: 3.651483e-01,
+                                            iz: 5.477225e-01,
+                                            r: 7.302967e-01)
 
-        XCTAssertEqual(simd_norm_inf(normalized.vector - expected.vector),
+        XCTAssertEqual(simd_norm_inf(normalized.vector - expectedNormalized.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
 
@@ -319,6 +319,24 @@ internal class simdFilamentTests: XCTestCase {
         let expectedProduct = simd_quatf(simd_float4(21, 57, 39, -3))
 
         XCTAssertEqual(simd_norm_inf(product.vector - expectedProduct.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+
+        let angle = normalized.angle
+        let axis = normalized.axis
+        let expectedAngle = Float(1.504080)
+        let expectedAxis = simd_float3(0.267261, 0.534522, 0.801784)
+
+        XCTAssertEqual(angle,
+                       expectedAngle,
+                       accuracy: simdFilamentTests.accuracy)
+        XCTAssertEqual(simd_norm_inf(axis - expectedAxis),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+
+        let reconstructed = simd_quatf(angle: angle, axis: axis)
+
+        XCTAssertEqual(simd_norm_inf(reconstructed.vector - normalized.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
     }
