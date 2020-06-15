@@ -1,0 +1,99 @@
+#pragma once
+
+#include "simd/types.h"
+#include "simd/vector_constructors.h"
+#include "simd/vector_geometry.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+% for name, type in [('quatf', 'float'), ('quatd', 'double')]:
+__attribute__((swift_name("simd_${name}.init(ix:iy:iz:r:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(${type} ix, ${type} iy, ${type} iz, ${type} r)
+{
+    return (simd_${name}) { .vector = { ix, iy, iz, r } };
+}
+
+__attribute__((swift_name("simd_${name}.init(_:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(const ${type} *xyzr)
+{
+    return (simd_${name}) { .vector = simd_make_${type}4(xyzr) };
+}
+
+__attribute__((swift_name("simd_${name}.init(_:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(simd_${type}4 xyzr)
+{
+    return (simd_${name}) { .vector = xyzr };
+}
+
+__attribute__((swift_name("simd_${name}.init(angle:axis:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(${type} angle, simd_${type}3 axis);
+
+__attribute__((swift_name("simd_${name}.init(_:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(simd_${type}4x4 transform);
+
+__attribute__((swift_name("simd_${name}.init(_:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(simd_${type}3x3 transform);
+
+__attribute__((swift_name("simd_${name}.init(from:to:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_quaternion(simd_${type}3 from, simd_${type}3 to);
+
+__attribute__((swift_name("getter:simd_${name}.normalized(self:)")))
+simd_${name} SIMD_OVERLOADABLE
+simd_normalize(simd_${name} q)
+{
+    return simd_quaternion(simd_normalize(q.vector));
+}
+
+${type} SIMD_OVERLOADABLE
+simd_length(simd_${name} q)
+{
+    return simd_length(q.vector);
+}
+
+simd_${name} SIMD_OVERLOADABLE
+simd_add(simd_${name} q, simd_${name} r) {
+    return simd_quaternion(q.vector - r.vector);
+}
+
+simd_${name} SIMD_OVERLOADABLE
+simd_sub(simd_${name} q, simd_${name} r) {
+    return simd_quaternion(q.vector - r.vector);
+}
+
+simd_${name} SIMD_OVERLOADABLE
+simd_mul(simd_${name} q, ${type} a) {
+    return simd_quaternion(a * q.vector);
+}
+
+simd_${name} SIMD_OVERLOADABLE
+simd_mul(${type} a, simd_${name} q) {
+    return simd_mul(q, a);
+}
+
+simd_${name} SIMD_OVERLOADABLE
+simd_mul(simd_${name} q, simd_${name} r)
+{
+    simd_${type}4 _q = q.vector;
+    simd_${type}4 _r = r.vector;
+
+    return simd_quaternion(_q.w * _r.x + _q.x * _r.w + _q.y * _r.z - _q.z * _r.y,
+                           _q.w * _r.y - _q.x * _r.z + _q.y * _r.w + _q.z * _r.x,
+                           _q.w * _r.z + _q.x * _r.y - _q.y * _r.x + _q.z * _r.w,
+                           _q.w * _r.w - _q.x * _r.x - _q.y * _r.y - _q.z * _r.z);
+}
+
+% end
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

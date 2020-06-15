@@ -23,6 +23,7 @@ internal class simdFilamentTests: XCTestCase {
         ("testTranspose", testTranspose),
         ("testAlmostEqual", testAlmostEqual),
         ("testInverse", testInverse),
+        ("testQuaternion", testQuaternion),
     ]
 
     private static let accuracy = Float(1e-3)
@@ -298,5 +299,27 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertTrue(simd_almost_equal_elements(simd_mul(mat, inverse),
                                                  matrix_identity_float3x3,
                                                  simdFilamentTests.accuracy))
+    }
+
+    internal func testQuaternion() {
+        let q = simd_quatf(ix: 1.0, iy: 2.0, iz: 3.0, r: 4.0)
+        let normalized = q.normalized
+        let expected = simd_quatf(ix: 1.825742e-01,
+                                  iy: 3.651483e-01,
+                                  iz: 5.477225e-01,
+                                  r: 7.302967e-01)
+
+        XCTAssertEqual(simd_norm_inf(normalized.vector - expected.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
+
+        let r = simd_quatf(simd_float4(6.0, 7.0, 5.0, 8.0))
+        let product = q * r
+        // https://www.wolframalpha.com/input/?i=%284+%2B+i+%2B+2j+%2B+3k%29+*+%284+%2B+2i+%2B+3j+%2B+k%29
+        let expectedProduct = simd_quatf(simd_float4(21, 57, 39, -3))
+
+        XCTAssertEqual(simd_norm_inf(product.vector - expectedProduct.vector),
+                       0.0,
+                       accuracy: simdFilamentTests.accuracy)
     }
 }

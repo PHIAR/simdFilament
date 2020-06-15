@@ -1,30 +1,71 @@
 import simdFilamentC
 import Foundation
 
+public protocol SIMDQuaternion {
+    associatedtype Scalar: SIMDScalar & FloatingPoint
+    typealias Vector = SIMD4 <Scalar>
+
+    var vector: Vector { get }
+
+    init(ix: Scalar, iy: Scalar, iz: Scalar, r: Scalar)
+    init(_ vector: Vector)
+
+    static func + (lhs: Self, rhs: Self) -> Self
+    static func - (lhs: Self, rhs: Self) -> Self
+    static func * (lhs: Self, rhs: Self) -> Self
+    static func * (lhs: Self, rhs: Scalar) -> Self
+    static func * (lhs: Scalar, rhs: Self) -> Self
+}
+
+public extension SIMDQuaternion {
+    static func == (lhs: Self,
+                    rhs: Self) -> Bool {
+        return lhs.vector == rhs.vector
+    }
+
+    init(real: Scalar,
+         imag: SIMD3 <Scalar>) {
+        self = Self(Vector(imag, real))
+    }
+
+    static func + (lhs: Self,
+                   rhs: Self) -> Self {
+        return Self(lhs.vector + rhs.vector)
+    }
+
+    static func - (lhs: Self,
+                   rhs: Self) -> Self {
+        return Self(lhs.vector - rhs.vector)
+    }
+
+    static func * (lhs: Self,
+                   rhs: Scalar) -> Self {
+        return Self(lhs.vector * rhs)
+    }
+
+    static func * (lhs: Scalar,
+                   rhs: Self) -> Self {
+        return rhs * lhs
+    }
+}
+
+extension simd_quatf: SIMDQuaternion, Equatable {
+    public static func * (lhs: Self,
+                          rhs: Self) -> Self {
+        return simd_mul(lhs, rhs)
+    }
+}
+
+extension simd_quatd: SIMDQuaternion, Equatable {
+    public static func * (lhs: Self,
+                          rhs: Self) -> Self {
+        return simd_mul(lhs, rhs)
+    }
+}
+
 public extension simd_quatd {
     init(angle: Double,
          axis: simd_double3) {
-        preconditionFailure()
-    }
-
-    init(ix: Double,
-         iy: Double,
-         iz: Double,
-         r: Double) {
-        preconditionFailure()
-    }
-}
-
-extension simd_quatd: Equatable {
-    public static func == (lhs: simd_quatd,
-                           rhs: simd_quatd) -> Bool {
-        preconditionFailure()
-    }
-}
-
-extension simd_quatd {
-    public static func * (lhs: simd_quatd,
-                          rhs: simd_quatd) -> simd_quatd {
         preconditionFailure()
     }
 }
@@ -47,33 +88,9 @@ public extension simd_quatf {
          to: SIMD3 <Float>) {
         preconditionFailure()
     }
-
-    init(ix: Float,
-         iy: Float,
-         iz: Float,
-         r: Float) {
-        preconditionFailure()
-    }
-
-    init(real: Float,
-         imag: SIMD3 <Float>) {
-        preconditionFailure()
-    }
-}
-
-extension simd_quatf: Equatable {
-    public static func == (lhs: simd_quatf,
-                           rhs: simd_quatf) -> Bool {
-        preconditionFailure()
-    }
 }
 
 extension simd_quatf {
-    public static func * (lhs: simd_quatf,
-                          rhs: simd_quatf) -> simd_quatf {
-        preconditionFailure()
-    }
-
     public static func / (lhs: simd_quatf,
                           rhs: simd_quatf) -> simd_quatf {
         preconditionFailure()
@@ -95,10 +112,6 @@ extension simd_quatf {
     }
 
     public var inverse: simd_quatf {
-        preconditionFailure()
-    }
-
-    public var normalized: simd_quatf {
         preconditionFailure()
     }
 
