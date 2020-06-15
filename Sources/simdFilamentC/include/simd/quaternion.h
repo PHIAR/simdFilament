@@ -1,3 +1,6 @@
+// GENERATED FILE, DO NOT EDIT DIRECTLY.
+// Look for a corresponding gyb file in the Templates directory.
+
 #pragma once
 
 #include "simd/types.h"

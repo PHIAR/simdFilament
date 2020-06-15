@@ -13,4 +13,7 @@ generate: $(TARGETS)
 .PHONY: build test
 
 Sources/%: Templates/%.gyb
-	$(GYB) $< > $@
+	@echo "// GENERATED FILE, DO NOT EDIT DIRECTLY." > $@
+	@echo "// Look for a corresponding gyb file in the Templates directory." >> $@
+	@echo >> $@
+	$(GYB) $< >> $@

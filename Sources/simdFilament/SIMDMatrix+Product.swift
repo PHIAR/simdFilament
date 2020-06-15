@@ -1,3 +1,6 @@
+// GENERATED FILE, DO NOT EDIT DIRECTLY.
+// Look for a corresponding gyb file in the Templates directory.
+
 import simdFilamentC
 
 public func * (lhs: simd_float2x2,
