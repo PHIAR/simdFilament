@@ -406,6 +406,134 @@ simd_make_ushort4(simd_ushort4 from)
     return __builtin_convertvector(from, simd_ushort4);
 }
 
+// Truncating constructors
+
+simd_float2 SIMD_OVERLOADABLE
+simd_make_float2(simd_float3 from)
+{
+    simd_float2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_float2 SIMD_OVERLOADABLE
+simd_make_float2(simd_float4 from)
+{
+    simd_float2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_float3 SIMD_OVERLOADABLE
+simd_make_float3(simd_float4 from)
+{
+    simd_float3 result;
+    result.x = from.x;
+    result.y = from.y;
+    result.z = from.z;
+    return result;
+}
+simd_double2 SIMD_OVERLOADABLE
+simd_make_double2(simd_double3 from)
+{
+    simd_double2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_double2 SIMD_OVERLOADABLE
+simd_make_double2(simd_double4 from)
+{
+    simd_double2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_double3 SIMD_OVERLOADABLE
+simd_make_double3(simd_double4 from)
+{
+    simd_double3 result;
+    result.x = from.x;
+    result.y = from.y;
+    result.z = from.z;
+    return result;
+}
+simd_int2 SIMD_OVERLOADABLE
+simd_make_int2(simd_int3 from)
+{
+    simd_int2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_int2 SIMD_OVERLOADABLE
+simd_make_int2(simd_int4 from)
+{
+    simd_int2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_int3 SIMD_OVERLOADABLE
+simd_make_int3(simd_int4 from)
+{
+    simd_int3 result;
+    result.x = from.x;
+    result.y = from.y;
+    result.z = from.z;
+    return result;
+}
+simd_uint2 SIMD_OVERLOADABLE
+simd_make_uint2(simd_uint3 from)
+{
+    simd_uint2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_uint2 SIMD_OVERLOADABLE
+simd_make_uint2(simd_uint4 from)
+{
+    simd_uint2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_uint3 SIMD_OVERLOADABLE
+simd_make_uint3(simd_uint4 from)
+{
+    simd_uint3 result;
+    result.x = from.x;
+    result.y = from.y;
+    result.z = from.z;
+    return result;
+}
+simd_ushort2 SIMD_OVERLOADABLE
+simd_make_ushort2(simd_ushort3 from)
+{
+    simd_ushort2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_ushort2 SIMD_OVERLOADABLE
+simd_make_ushort2(simd_ushort4 from)
+{
+    simd_ushort2 result;
+    result.x = from.x;
+    result.y = from.y;
+    return result;
+}
+simd_ushort3 SIMD_OVERLOADABLE
+simd_make_ushort3(simd_ushort4 from)
+{
+    simd_ushort3 result;
+    result.x = from.x;
+    result.y = from.y;
+    result.z = from.z;
+    return result;
+}
+
 // From arrays
 
 simd_float2 SIMD_OVERLOADABLE

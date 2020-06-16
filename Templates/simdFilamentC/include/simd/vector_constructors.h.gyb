@@ -79,6 +79,24 @@ simd_make_${type}${dims}(simd_${type2}${dims} from)
 %     end
 % end
 
+// Truncating constructors
+
+% for type in types:
+%     for dims in range(2, 5):
+%         for input_dims in range(dims + 1, 5):
+simd_${type}${dims} SIMD_OVERLOADABLE
+simd_make_${type}${dims}(simd_${type}${input_dims} from)
+{
+    simd_${type}${dims} result;
+%             for i in range(dims):
+    result.${var_names[i]} = from.${var_names[i]};
+%             end
+    return result;
+}
+%         end
+%     end
+% end
+
 // From arrays
 
 % for type in types:

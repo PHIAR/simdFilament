@@ -36,9 +36,11 @@ internal class simdFilamentTests: XCTestCase {
         let vec1 = simd_make_float2(values)
         let vec2 = simd_float2(values)
         let vec3 = simd_float2(values[0], values[1])
+        let vec4 = simd_make_float2(simd_float4(values[0], values[1], 1.0, 2.0))
 
         XCTAssertEqual(vec1, vec2)
         XCTAssertEqual(vec1, vec3)
+        XCTAssertEqual(vec1, vec4)
     }
 
     internal func testConstruct3() {
