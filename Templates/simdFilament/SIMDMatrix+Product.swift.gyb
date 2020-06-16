@@ -13,3 +13,20 @@ public func * (lhs: simd_${type}${common}x${rowsA},
 %         end
 %     end
 % end
+
+% for type in ('float', 'double'):
+%     for vecSize in range(2, 5):
+%         for other in range(2, 5):
+public func * (lhs: simd_${type}${vecSize}x${other},
+               rhs: simd_${type}${vecSize}) -> simd_${type}${other} {
+    return simd_mul(lhs, rhs)
+}
+
+public func * (lhs: simd_${type}${vecSize},
+               rhs: simd_${type}${other}x${vecSize}) -> simd_${type}${other} {
+    return simd_mul(lhs, rhs)
+}
+
+%         end
+%     end
+% end

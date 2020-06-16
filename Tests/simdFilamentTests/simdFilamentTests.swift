@@ -241,8 +241,8 @@ internal class simdFilamentTests: XCTestCase {
         let mat = simd_float2x2(simd_float2(1.0, 2.0),
                                 simd_float2(3.0, 4.0))
         let vec = simd_float2(1.0, 2.0)
-        let prod = simd_mul(mat, vec)
-        let prodTranspose = simd_mul(vec, mat)
+        let prod = mat * vec
+        let prodTranspose = vec * mat
 
         XCTAssertEqual(prod, simd_float2(7.0, 10.0))
         XCTAssertEqual(prodTranspose, simd_float2(5.0, 11.0))
