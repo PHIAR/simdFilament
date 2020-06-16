@@ -373,6 +373,24 @@ internal class simdFilamentTests: XCTestCase {
         XCTAssertEqual(simd_norm_inf(q.vector - expectedQ.vector),
                        0.0,
                        accuracy: simdFilamentTests.accuracy)
+
+        let backToMatrix = simd_float3x3(q)
+
+        XCTAssert(simd_almost_equal_elements(matrix,
+                                             backToMatrix,
+                                             simdFilamentTests.accuracy))
+
+        let matrix4x4 = simd_float4x4(
+            simd_make_float4(matrix[0]),
+            simd_make_float4(matrix[1]),
+            simd_make_float4(matrix[2]),
+            simd_float4(0.0, 0.0, 0.0, 1.0)
+        )
+        let backToMatrix4x4 = simd_float4x4(q)
+
+        XCTAssert(simd_almost_equal_elements(matrix4x4,
+                                             backToMatrix4x4,
+                                             simdFilamentTests.accuracy))
     }
 
     internal func testQuaternionFromVectors() {

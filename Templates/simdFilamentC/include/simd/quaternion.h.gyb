@@ -78,6 +78,43 @@ simd_quaternion(simd_${type}4x4 transform)
     return simd_quaternion(*(simd_${type}3x3*) &transform);
 }
 
+SWIFT_NAME("simd_${type}3x3.init(_:)")
+simd_${type}3x3 SIMD_OVERLOADABLE
+simd_matrix(simd_${name} q)
+{
+    // https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+    simd_${type}4 _q = q.vector;
+
+    simd_${type}4x3 m1 = simd_matrix(
+        simd_make_${type}3(_q.w, _q.z, -_q.y),
+        simd_make_${type}3(-_q.z, _q.w, _q.x),
+        simd_make_${type}3(_q.y, -_q.x, _q.w),
+        simd_make_${type}3(_q.x, _q.y, _q.z)
+    );
+
+    simd_${type}3x4 m2 = simd_matrix(
+        simd_make_${type}4(_q.w, _q.z, -_q.y, _q.x),
+        simd_make_${type}4(-_q.z, _q.w, _q.x, _q.y),
+        simd_make_${type}4(_q.y, -_q.x, _q.w, _q.z)
+    );
+
+    return simd_mul(m1, m2);
+}
+
+SWIFT_NAME("simd_${type}4x4.init(_:)")
+simd_${type}4x4 SIMD_OVERLOADABLE
+simd_matrix4x4(simd_${name} q)
+{
+    simd_${type}3x3 matrix3x3 = simd_matrix(q);
+
+    return simd_matrix(
+        simd_make_${type}4(matrix3x3.columns[0]),
+        simd_make_${type}4(matrix3x3.columns[1]),
+        simd_make_${type}4(matrix3x3.columns[2]),
+        simd_make_${type}4(0.0f, 0.0f, 0.0f, 1.0f)
+    );
+}
+
 SWIFT_NAME("simd_${name}.init(from:to:)")
 simd_${name} SIMD_OVERLOADABLE
 simd_quaternion(simd_${type}3 from, simd_${type}3 to)

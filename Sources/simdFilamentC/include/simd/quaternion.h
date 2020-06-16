@@ -80,6 +80,43 @@ simd_quaternion(simd_float4x4 transform)
     return simd_quaternion(*(simd_float3x3*) &transform);
 }
 
+SWIFT_NAME("simd_float3x3.init(_:)")
+simd_float3x3 SIMD_OVERLOADABLE
+simd_matrix(simd_quatf q)
+{
+    // https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+    simd_float4 _q = q.vector;
+
+    simd_float4x3 m1 = simd_matrix(
+        simd_make_float3(_q.w, _q.z, -_q.y),
+        simd_make_float3(-_q.z, _q.w, _q.x),
+        simd_make_float3(_q.y, -_q.x, _q.w),
+        simd_make_float3(_q.x, _q.y, _q.z)
+    );
+
+    simd_float3x4 m2 = simd_matrix(
+        simd_make_float4(_q.w, _q.z, -_q.y, _q.x),
+        simd_make_float4(-_q.z, _q.w, _q.x, _q.y),
+        simd_make_float4(_q.y, -_q.x, _q.w, _q.z)
+    );
+
+    return simd_mul(m1, m2);
+}
+
+SWIFT_NAME("simd_float4x4.init(_:)")
+simd_float4x4 SIMD_OVERLOADABLE
+simd_matrix4x4(simd_quatf q)
+{
+    simd_float3x3 matrix3x3 = simd_matrix(q);
+
+    return simd_matrix(
+        simd_make_float4(matrix3x3.columns[0]),
+        simd_make_float4(matrix3x3.columns[1]),
+        simd_make_float4(matrix3x3.columns[2]),
+        simd_make_float4(0.0f, 0.0f, 0.0f, 1.0f)
+    );
+}
+
 SWIFT_NAME("simd_quatf.init(from:to:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(simd_float3 from, simd_float3 to)
@@ -337,6 +374,43 @@ simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(simd_double4x4 transform)
 {
     return simd_quaternion(*(simd_double3x3*) &transform);
+}
+
+SWIFT_NAME("simd_double3x3.init(_:)")
+simd_double3x3 SIMD_OVERLOADABLE
+simd_matrix(simd_quatd q)
+{
+    // https://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
+    simd_double4 _q = q.vector;
+
+    simd_double4x3 m1 = simd_matrix(
+        simd_make_double3(_q.w, _q.z, -_q.y),
+        simd_make_double3(-_q.z, _q.w, _q.x),
+        simd_make_double3(_q.y, -_q.x, _q.w),
+        simd_make_double3(_q.x, _q.y, _q.z)
+    );
+
+    simd_double3x4 m2 = simd_matrix(
+        simd_make_double4(_q.w, _q.z, -_q.y, _q.x),
+        simd_make_double4(-_q.z, _q.w, _q.x, _q.y),
+        simd_make_double4(_q.y, -_q.x, _q.w, _q.z)
+    );
+
+    return simd_mul(m1, m2);
+}
+
+SWIFT_NAME("simd_double4x4.init(_:)")
+simd_double4x4 SIMD_OVERLOADABLE
+simd_matrix4x4(simd_quatd q)
+{
+    simd_double3x3 matrix3x3 = simd_matrix(q);
+
+    return simd_matrix(
+        simd_make_double4(matrix3x3.columns[0]),
+        simd_make_double4(matrix3x3.columns[1]),
+        simd_make_double4(matrix3x3.columns[2]),
+        simd_make_double4(0.0f, 0.0f, 0.0f, 1.0f)
+    );
 }
 
 SWIFT_NAME("simd_quatd.init(from:to:)")

@@ -5,8 +5,8 @@
 #define CONSTRUCT_2_COLUMNS(type, column_type) \
     SWIFT_NAME("simd_" #type ".init(_:_:)") \
     simd_ ## type SIMD_OVERLOADABLE \
-    simd_make_ ## type(simd_ ## column_type col0, \
-                       simd_ ## column_type col1) \
+    simd_matrix(simd_ ## column_type col0, \
+                simd_ ## column_type col1) \
     { \
         simd_ ## type result = {col0, col1}; \
         return result; \
@@ -15,9 +15,9 @@
 #define CONSTRUCT_3_COLUMNS(type, column_type) \
     SWIFT_NAME("simd_" #type ".init(_:_:_:)") \
     simd_ ## type SIMD_OVERLOADABLE \
-    simd_make_ ## type(simd_ ## column_type col0, \
-                       simd_ ## column_type col1, \
-                       simd_ ## column_type col2) \
+    simd_matrix(simd_ ## column_type col0, \
+                simd_ ## column_type col1, \
+                simd_ ## column_type col2) \
     { \
         simd_ ## type result = {col0, col1, col2}; \
         return result; \
@@ -26,10 +26,10 @@
 #define CONSTRUCT_4_COLUMNS(type, column_type) \
     SWIFT_NAME("simd_" #type ".init(_:_:_:_:)") \
     simd_ ## type SIMD_OVERLOADABLE \
-    simd_make_ ## type(simd_ ## column_type col0, \
-                       simd_ ## column_type col1, \
-                       simd_ ## column_type col2, \
-                       simd_ ## column_type col3) \
+    simd_matrix(simd_ ## column_type col0, \
+                simd_ ## column_type col1, \
+                simd_ ## column_type col2, \
+                simd_ ## column_type col3) \
     { \
         simd_ ## type result = {col0, col1, col2, col3}; \
         return result; \
