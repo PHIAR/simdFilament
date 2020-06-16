@@ -1,5 +1,14 @@
 import simdFilamentC
 
+%{
+types = ('float', 'double', 'int', 'uint', 'ushort')
+swift_types = ('Float', 'Double', 'Int32', 'UInt32', 'UInt16')
+type_map = { base: swift for base, swift in zip(types, swift_types) }
+
+def get_swift_type(type):
+    return type_map[type]
+}%
+
 % for type in ('float', 'double'):
 %     for rowsA in range(2, 5):
 %         for common in range(2, 5):
@@ -24,6 +33,25 @@ public func * (lhs: simd_${type}${vecSize}x${other},
 
 public func * (lhs: simd_${type}${vecSize},
                rhs: simd_${type}${other}x${vecSize}) -> simd_${type}${other} {
+    return simd_mul(lhs, rhs)
+}
+
+%         end
+%     end
+% end
+
+% for type in ('float', 'double'):
+%     swift_type = get_swift_type(type)
+%     for cols in range(2, 5):
+%         for rows in range(2, 5):
+%             matrix_type = 'simd_{}{}x{}'.format(type, cols, rows)
+public func * (lhs: ${swift_type},
+               rhs: ${matrix_type}) -> ${matrix_type} {
+    return simd_mul(lhs, rhs)
+}
+
+public func * (lhs: ${matrix_type},
+               rhs: ${swift_type}) -> ${matrix_type} {
     return simd_mul(lhs, rhs)
 }
 

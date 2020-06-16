@@ -70,6 +70,38 @@
     MAT_BINARY_OPS_ALL_COLS(base_type, 3) \
     MAT_BINARY_OPS_ALL_COLS(base_type, 4)
 
+#define MAT_SCALAR_PRODS(base_type, rows ,cols) \
+    simd_ ## base_type ## cols ## x ## rows SIMD_OVERLOADABLE \
+    simd_mul(base_type s, \
+             simd_ ## base_type ## cols ## x ## rows m) \
+    { \
+        simd_ ## base_type ## cols ## x ## rows out; \
+        for (int i = 0; i < cols; ++i) { \
+            out.columns[i] = s * m.columns[i]; \
+        } \
+        return out; \
+    } \
+    simd_ ## base_type ## cols ## x ## rows SIMD_OVERLOADABLE \
+    simd_mul(simd_ ## base_type ## cols ## x ## rows m, \
+             base_type s) \
+    { \
+        simd_ ## base_type ## cols ## x ## rows out; \
+        for (int i = 0; i < cols; ++i) { \
+            out.columns[i] = s * m.columns[i]; \
+        } \
+        return out; \
+    }
+
+#define MAT_SCALAR_PRODS_ALL_COLS(base_type, rows) \
+    MAT_SCALAR_PRODS(base_type, rows, 2) \
+    MAT_SCALAR_PRODS(base_type, rows, 3) \
+    MAT_SCALAR_PRODS(base_type, rows, 4)
+
+#define MAT_SCALAR_PRODS_ALL_DIMS(base_type) \
+    MAT_SCALAR_PRODS_ALL_COLS(base_type, 2) \
+    MAT_SCALAR_PRODS_ALL_COLS(base_type, 3) \
+    MAT_SCALAR_PRODS_ALL_COLS(base_type, 4)
+
 #define MAT_VEC_PRODS(base_type, rows ,cols) \
     simd_ ## base_type ## cols SIMD_OVERLOADABLE \
     simd_mul(simd_ ## base_type ## rows v, \
@@ -140,6 +172,9 @@ extern "C"
 
     MAT_BINARY_OPS_ALL_DIMS(float)
     MAT_BINARY_OPS_ALL_DIMS(double)
+
+    MAT_SCALAR_PRODS_ALL_DIMS(float)
+    MAT_SCALAR_PRODS_ALL_DIMS(double)
 
     MAT_VEC_PRODS_ALL_DIMS(float)
     MAT_VEC_PRODS_ALL_DIMS(double)

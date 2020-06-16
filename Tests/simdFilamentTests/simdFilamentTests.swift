@@ -18,8 +18,9 @@ internal class simdFilamentTests: XCTestCase {
         ("testDistance", testDistance),
         ("testNormalize", testNormalize),
         ("testProject", testProject),
-        ("testMatrixVectorProduct", testMatrixVectorProduct),
         ("testMatrixMatrixProduct", testMatrixMatrixProduct),
+        ("testMatrixScalarProduct", testMatrixScalarProduct),
+        ("testMatrixVectorProduct", testMatrixVectorProduct),
         ("testTranspose", testTranspose),
         ("testAlmostEqual", testAlmostEqual),
         ("testInverse", testInverse),
@@ -237,17 +238,6 @@ internal class simdFilamentTests: XCTestCase {
                        accuracy: simdFilamentTests.accuracy)
     }
 
-    internal func testMatrixVectorProduct() {
-        let mat = simd_float2x2(simd_float2(1.0, 2.0),
-                                simd_float2(3.0, 4.0))
-        let vec = simd_float2(1.0, 2.0)
-        let prod = mat * vec
-        let prodTranspose = vec * mat
-
-        XCTAssertEqual(prod, simd_float2(7.0, 10.0))
-        XCTAssertEqual(prodTranspose, simd_float2(5.0, 11.0))
-    }
-
     internal func testMatrixMatrixProduct() {
         let mat1 = simd_float4x2(simd_float2(1.0, 2.0),
                                  simd_float2(3.0, 4.0),
@@ -266,6 +256,30 @@ internal class simdFilamentTests: XCTestCase {
         let prodOperator = mat2 * mat1
 
         XCTAssertEqual(prodOperator, expected)
+    }
+
+    internal func testMatrixScalarProduct() {
+        let mat = simd_float2x2(simd_float2(1.0, 2.0),
+                                simd_float2(3.0, 4.0))
+        let s = Float(10.0)
+        let prod = s * mat
+        let prod2 = mat * s
+        let expected = simd_float2x2(simd_float2(10.0, 20.0),
+                                     simd_float2(30.0, 40.0))
+
+        XCTAssert(simd_almost_equal_elements(expected, prod, simdFilamentTests.accuracy))
+        XCTAssert(simd_almost_equal_elements(expected, prod2, simdFilamentTests.accuracy))
+    }
+
+    internal func testMatrixVectorProduct() {
+        let mat = simd_float2x2(simd_float2(1.0, 2.0),
+                                simd_float2(3.0, 4.0))
+        let vec = simd_float2(1.0, 2.0)
+        let prod = mat * vec
+        let prodTranspose = vec * mat
+
+        XCTAssertEqual(prod, simd_float2(7.0, 10.0))
+        XCTAssertEqual(prodTranspose, simd_float2(5.0, 11.0))
     }
 
     internal func testTranspose() {
