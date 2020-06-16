@@ -1,12 +1,14 @@
-GYB := python Templates/gyb.py --line-directive ''
+GYB ?= python Templates/gyb.py --line-directive ''
+SWIFT_FLAGS ?=
+
 TEMPLATES := $(shell find Templates -type f -name '*.gyb')
 TARGETS := $(patsubst Templates/%.gyb,Sources/%,$(TEMPLATES))
 
 build: $(TARGETS)
-	swift build
+	swift build $(SWIFT_FLAGS)
 
 test: $(TARGETS)
-	swift test
+	swift test $(SWIFT_FLAGS)
 
 generate: $(TARGETS)
 
