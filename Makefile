@@ -7,12 +7,15 @@ TARGETS := $(patsubst Templates/%.gyb,Sources/%,$(TEMPLATES))
 build: $(TARGETS)
 	swift build $(SWIFT_FLAGS)
 
+clean:
+	swift package clean
+
 test: $(TARGETS)
 	swift test $(SWIFT_FLAGS)
 
 generate: $(TARGETS)
 
-.PHONY: build test
+.PHONY: build test clean
 
 Sources/%: Templates/%.gyb
 	@echo "// GENERATED FILE, DO NOT EDIT DIRECTLY." > $@
