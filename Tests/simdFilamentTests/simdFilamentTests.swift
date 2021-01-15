@@ -25,7 +25,8 @@ internal class simdFilamentTests: XCTestCase {
         ("testAlmostEqual", testAlmostEqual),
         ("testInverse", testInverse),
         ("testQuaternion", testQuaternion),
-        ("testQuaternionFromMatrix", testQuaternionFromVectors),
+        ("testQuaternionFromMatrix", testQuaternionFromMatrix),
+        ("testQuaternionFromMatrix180", testQuaternionFromMatrix180),
         ("testQuaternionFromVectors", testQuaternionFromVectors),
         ("testQuaternionPairwise", testQuaternionPairwise),
     ]
@@ -406,6 +407,20 @@ internal class simdFilamentTests: XCTestCase {
 
         XCTAssert(simd_almost_equal_elements(matrix4x4,
                                              backToMatrix4x4,
+                                             simdFilamentTests.accuracy))
+    }
+
+    internal func testQuaternionFromMatrix180() {
+        let matrix = simd_float3x3(
+            simd_float3(-1.0, 0.0, 0.0),
+            simd_float3(0.0, 1.0, 0.0),
+            simd_float3(0.0, 0.0, -1.0 + 1e-6)
+        )
+        let q = simd_quatf(matrix)
+        let backToMatrix = simd_float3x3(q)
+
+        XCTAssert(simd_almost_equal_elements(matrix,
+                                             backToMatrix,
                                              simdFilamentTests.accuracy))
     }
 
