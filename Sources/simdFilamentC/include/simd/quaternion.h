@@ -52,25 +52,51 @@ SWIFT_NAME("simd_quatf.init(_:)")
 simd_quatf SIMD_OVERLOADABLE
 simd_quaternion(simd_float3x3 transform) {
     // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+    const simd_float3 *m = transform.columns;
+    float trace = m[0][0] + m[1][1] + m[2][2];
 
-    simd_float4 diag = simd_make_float4(
-        transform.columns[0][0],
-        transform.columns[1][1],
-        transform.columns[2][2]
-    );
+    if (trace > 0.0f) {
+        float s = 0.5f / sqrt(trace + 1.0f);
+        simd_float4 qvec = s * simd_make_float4(
+                m[1][2] - m[2][1],
+                m[2][0] - m[0][2],
+                m[0][1] - m[1][0],
+                0.0f);
+        qvec.w = 0.25f / s;
+        return simd_quaternion(qvec);
+    }
 
-    simd_float4 vector = 0.5f * simd_make_float4(
-        sqrt(fmax(0.0f, 1.0f + diag[0] - diag[1] - diag[2])),
-        sqrt(fmax(0.0f, 1.0f - diag[0] + diag[1] - diag[2])),
-        sqrt(fmax(0.0f, 1.0f - diag[0] - diag[1] + diag[2])),
-        sqrt(fmax(0.0f, 1.0f + diag[0] + diag[1] + diag[2]))
-    );
+    if (m[0][0] > m[1][1] && m[0][0] > m[2][2]) {
+        float s = 2.0f * sqrt(1.0f + m[0][0] - m[1][1] - m[2][2]);
+        simd_float4 qvec = simd_make_float4(
+                0.0f,
+                m[1][0] + m[0][1],
+                m[2][0] + m[0][2],
+                m[1][2] - m[2][1]) / s;
+        qvec.x = 0.25f * s;
+        return simd_quaternion(qvec);
+    }
 
-    vector.x = copysign(vector.x, transform.columns[1][2] - transform.columns[2][1]);
-    vector.y = copysign(vector.y, transform.columns[2][0] - transform.columns[0][2]);
-    vector.z = copysign(vector.z, transform.columns[0][1] - transform.columns[1][0]);
+    if (m[1][1] > m[2][2]) {
+        float s = 2.0f * sqrt(1.0f + m[1][1] - m[0][0] - m[2][2]);
+        simd_float4 qvec = simd_make_float4(
+                m[1][0] + m[0][1],
+                0.0f,
+                m[2][1] + m[1][2],
+                m[2][0] - m[0][2]) / s;
+        qvec.y = 0.25f * s;
+        return simd_quaternion(qvec);
+    }
 
-    return simd_quaternion(vector);
+    float s = 2.0f * sqrt(1.0f + m[2][2] - m[0][0] - m[1][1]);
+    simd_float4 qvec = simd_make_float4(
+            m[2][0] + m[0][2],
+            m[2][1] + m[1][2],
+            0.0f,
+            m[0][1] - m[1][0]) / s;
+    qvec.z = 0.25f * s;
+    return simd_quaternion(qvec);
+
 }
 
 SWIFT_NAME("simd_quatf.init(_:)")
@@ -348,25 +374,51 @@ SWIFT_NAME("simd_quatd.init(_:)")
 simd_quatd SIMD_OVERLOADABLE
 simd_quaternion(simd_double3x3 transform) {
     // https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+    const simd_double3 *m = transform.columns;
+    double trace = m[0][0] + m[1][1] + m[2][2];
 
-    simd_double4 diag = simd_make_double4(
-        transform.columns[0][0],
-        transform.columns[1][1],
-        transform.columns[2][2]
-    );
+    if (trace > 0.0f) {
+        double s = 0.5f / sqrt(trace + 1.0f);
+        simd_double4 qvec = s * simd_make_double4(
+                m[1][2] - m[2][1],
+                m[2][0] - m[0][2],
+                m[0][1] - m[1][0],
+                0.0f);
+        qvec.w = 0.25f / s;
+        return simd_quaternion(qvec);
+    }
 
-    simd_double4 vector = 0.5f * simd_make_double4(
-        sqrt(fmax(0.0f, 1.0f + diag[0] - diag[1] - diag[2])),
-        sqrt(fmax(0.0f, 1.0f - diag[0] + diag[1] - diag[2])),
-        sqrt(fmax(0.0f, 1.0f - diag[0] - diag[1] + diag[2])),
-        sqrt(fmax(0.0f, 1.0f + diag[0] + diag[1] + diag[2]))
-    );
+    if (m[0][0] > m[1][1] && m[0][0] > m[2][2]) {
+        double s = 2.0f * sqrt(1.0f + m[0][0] - m[1][1] - m[2][2]);
+        simd_double4 qvec = simd_make_double4(
+                0.0f,
+                m[1][0] + m[0][1],
+                m[2][0] + m[0][2],
+                m[1][2] - m[2][1]) / s;
+        qvec.x = 0.25f * s;
+        return simd_quaternion(qvec);
+    }
 
-    vector.x = copysign(vector.x, transform.columns[1][2] - transform.columns[2][1]);
-    vector.y = copysign(vector.y, transform.columns[2][0] - transform.columns[0][2]);
-    vector.z = copysign(vector.z, transform.columns[0][1] - transform.columns[1][0]);
+    if (m[1][1] > m[2][2]) {
+        double s = 2.0f * sqrt(1.0f + m[1][1] - m[0][0] - m[2][2]);
+        simd_double4 qvec = simd_make_double4(
+                m[1][0] + m[0][1],
+                0.0f,
+                m[2][1] + m[1][2],
+                m[2][0] - m[0][2]) / s;
+        qvec.y = 0.25f * s;
+        return simd_quaternion(qvec);
+    }
 
-    return simd_quaternion(vector);
+    double s = 2.0f * sqrt(1.0f + m[2][2] - m[0][0] - m[1][1]);
+    simd_double4 qvec = simd_make_double4(
+            m[2][0] + m[0][2],
+            m[2][1] + m[1][2],
+            0.0f,
+            m[0][1] - m[1][0]) / s;
+    qvec.z = 0.25f * s;
+    return simd_quaternion(qvec);
+
 }
 
 SWIFT_NAME("simd_quatd.init(_:)")
